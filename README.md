@@ -1,1 +1,1 @@
-# girlHackthon
+# girlCodeHackthon
