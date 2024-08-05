@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="title_activity_maps">MapsActivity</string>
+
+    <string-array name="menu_options">
+        <item>History</item>
+        <item>Settings</item>
+        <item>Help</item>
+        <item>Language</item>
+        <item>Friends</item>
+    </string-array>
 </resources>

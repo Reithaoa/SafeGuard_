@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.SafeGuard" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary branding color. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/pink</item>
+        <item name="colorPrimaryVariant">@color/pink</item>
         <item name="colorOnPrimary">@android:color/white</item>
         <!-- Secondary branding color. -->
         <item name="colorSecondary">@color/colorAccent</item>
@@ -21,7 +21,7 @@
 
     <!-- Custom Button style -->
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="backgroundTint">@color/pink</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:padding">12dp</item>
         <item name="android:layout_margin">8dp</item>

@@ -1,11 +1,10 @@
-// MainActivity.java
-
 package com.example.myapplication;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -14,9 +13,12 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,11 +38,21 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private SpeechRecognizer speechRecognizer;
     private TextToSpeech textToSpeech;
@@ -49,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvLocation;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
+    private MapView mapView;
+    private GoogleMap gMap;
+    private Spinner spinnerMenu;
+    private TextView tvUserName;
+
+
 
     private final ActivityResultLauncher<Intent> profileActivityLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -88,6 +106,18 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
+        Spinner spinnerMenu = findViewById(R.id.spinnerMenu);
+        List<String> menuOptions = Arrays.asList(getResources().getStringArray(R.array.menu_options));
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.menu_options, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMenu.setAdapter(adapter);
+
+
+
         // Edge-to-Edge display setup
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -95,212 +125,314 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Initialize UI elements
+        // Initialize views
         btnSpeak = findViewById(R.id.btnSpeak);
         btnListen = findViewById(R.id.btnListen);
         etInput = findViewById(R.id.etInput);
-        btnCreateProfile = findViewById(R.id.btnCreateProfile);
         tvLocation = findViewById(R.id.tvLocation);
+        btnCreateProfile = findViewById(R.id.btnCreateProfile);
         btnTrackMe = findViewById(R.id.btnTrackMe);
         btnSOS = findViewById(R.id.btnSOS);
         btnHelp = findViewById(R.id.btnHelp);
 
-        // Initialize SpeechRecognizer and TextToSpeech
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-        speechRecognizer.setRecognitionListener(new SpeechRecognitionListener());
+        // Initialize MapView
+        mapView = findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
 
-        textToSpeech = new TextToSpeech(this, status -> {
-            if (status == TextToSpeech.SUCCESS) {
-                textToSpeech.setLanguage(Locale.getDefault());
+        // Initialize FusedLocationProviderClient
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        Button btnSOS = findViewById(R.id.btnSOS);
+        btnSOS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getLocationAndSend();
             }
         });
 
-        // Set up location client and callback
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        locationCallback = new LocationCallback() {
+        // Initialize Speech Recognizer
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
-            public void onLocationResult(@NonNull LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    updateLocationUI(location);
+            public void onReadyForSpeech(Bundle params) {
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+            }
+
+            @Override
+            public void onRmsChanged(float rmsdB) {
+            }
+
+            @Override
+            public void onBufferReceived(byte[] buffer) {
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+            }
+
+            @Override
+            public void onError(int error) {
+                Toast.makeText(MainActivity.this, "Speech recognition error: " + error, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResults(Bundle results) {
+                ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                if (matches != null && !matches.isEmpty()) {
+                    etInput.setText(matches.get(0));
                 }
             }
-        };
 
-        // Request SMS permissions
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+            @Override
+            public void onPartialResults(Bundle partialResults) {
+            }
 
-            // Request SMS permissions
-            requestSmsPermissionsLauncher.launch(new String[]{
-                    Manifest.permission.SEND_SMS,
-                    Manifest.permission.RECEIVE_SMS,
-                    Manifest.permission.READ_SMS
-            });
-        }
+            @Override
+            public void onEvent(int eventType, Bundle params) {
+            }
+        });
 
-        // Request location permission
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
-        } else {
-            startLocationUpdates();
-        }
+        // Initialize Text-to-Speech
+        textToSpeech = new TextToSpeech(this, status -> {
+            if (status != TextToSpeech.ERROR) {
+                textToSpeech.setLanguage(Locale.US);
+            }
+        });
 
-        // Set up button click listeners
-        btnSpeak.setOnClickListener(v -> speakText(etInput.getText().toString()));
-        btnListen.setOnClickListener(v -> listenToSpeech());
+        // Button listeners
+        btnSpeak.setOnClickListener(v -> {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                speechRecognizer.startListening(intent);
+            } else {
+                Toast.makeText(MainActivity.this, "Speech recognition is not supported on your device.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnListen.setOnClickListener(v -> {
+            String text = etInput.getText().toString();
+            if (!text.isEmpty()) {
+                textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+            } else {
+                Toast.makeText(MainActivity.this, "Please enter text to listen.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         btnCreateProfile.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             profileActivityLauncher.launch(intent);
         });
-        btnTrackMe.setOnClickListener(v -> shareLocation());
-        btnSOS.setOnClickListener(v -> sendSOSAlert());
-        btnHelp.setOnClickListener(v -> showHelpContacts());
+
+        btnTrackMe.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                startLocationUpdates();
+            } else {
+                requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+        });
+
+        btnSOS.setOnClickListener(v -> {
+            shareLocation();
+        });
+
+        btnHelp.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Help");
+            builder.setMessage("This is a safety app to help you share your location in case of emergencies.\n\n" +
+                    "1. Speak: Convert your speech to text.\n" +
+                    "2. Listen: Convert text to speech.\n" +
+                    "3. Create Profile: Create your profile and add emergency contacts.\n" +
+                    "4. Track Me: Start location updates to get your real-time location.\n" +
+                    "5. SOS: Send your current location to your emergency contacts.\n" +
+                    "6. Help: Show this help message.");
+            builder.setPositiveButton("OK", null);
+            builder.show();
+        });
+
+        // Request necessary permissions
+        requestSmsPermissionsLauncher.launch(new String[]{Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS});
+
+        // Initialize location callback
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                if (locationResult != null) {
+                    Location location = locationResult.getLastLocation();
+                    if (location != null) {
+                        updateLocation(location);
+                    }
+                }
+            }
+        };
+    }
+
+    private void getLocationAndSend() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
+
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    sendLocationToContacts(location);
+                } else {
+                    Toast.makeText(MainActivity.this, "Unable to get location", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private void sendLocationToContacts(Location location) {
+        String message = "Emergency! I'm at: https://maps.google.com/?q=" + location.getLatitude() + "," + location.getLongitude();
+
+        List<String> emergencyContacts = getEmergencyContacts();  // Implement this method to get stored contacts
+
+        for (String contact : emergencyContacts) {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(contact, null, message, null, null);
+        }
+
+        Toast.makeText(this, "Location sent to emergency contacts!", Toast.LENGTH_SHORT).show();
+    }
+    private void saveEmergencyContact(String contact) {
+        SharedPreferences sharedPreferences = getSharedPreferences("EmergencyContacts", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("contact1", contact);
+        editor.apply();
+    }
+
+    private List<String> getEmergencyContacts() {
+        SharedPreferences sharedPreferences = getSharedPreferences("EmergencyContacts", MODE_PRIVATE);
+        List<String> contacts = new ArrayList<>();
+        contacts.add(sharedPreferences.getString("contact1", null));
+        return contacts;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLocationAndSend();
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        gMap = googleMap;
+        gMap.getUiSettings().setZoomControlsEnabled(true);
+
+        // Check for location permission and get the current location
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, location -> {
+                        if (location != null) {
+                            updateLocation(location);
+                            gMap.setMyLocationEnabled(true);
+                            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                            gMap.addMarker(new MarkerOptions().position(userLocation).title("You are here"));
+                            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                        }
+                    });
+        } else {
+            requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+    }
+
+    private void updateLocation(Location location) {
+        if (location != null) {
+            String locationText = "Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude();
+            tvLocation.setText(locationText);
+
+            if (gMap != null) {
+                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                gMap.clear();
+                gMap.addMarker(new MarkerOptions().position(userLocation).title("You are here"));
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+            }
+        }
     }
 
     private void startLocationUpdates() {
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000); // Update interval in milliseconds
-        locationRequest.setFastestInterval(5000); // Fastest update interval in milliseconds
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationRequest locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(10000)
+                .setFastestInterval(5000);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
         }
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-    }
-
-    private void updateLocationUI(Location location) {
-        String locationText = "Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude();
-        tvLocation.setText(locationText);
     }
 
     private void shareLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
-            // Example emergency contact number
-            String emergencyContact = "1234567890";
+            List<String> emergencyContacts = getEmergencyContacts();
+            if (emergencyContacts.isEmpty()) {
+                Toast.makeText(this, "No emergency contacts found", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             String message = "I am here: " + tvLocation.getText().toString();
 
-            Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
-            smsIntent.setData(Uri.parse("smsto:" + emergencyContact));
-            smsIntent.putExtra("sms_body", message);
-            if (smsIntent.resolveActivity(getPackageManager()) != null) {
-                startActivity(smsIntent);
-            } else {
-                Toast.makeText(this, "No SMS app found", Toast.LENGTH_SHORT).show();
+            for (String contact : emergencyContacts) {
+                Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+                smsIntent.setData(Uri.parse("smsto:" + contact));
+                smsIntent.putExtra("sms_body", message);
+                if (smsIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(smsIntent);
+                } else {
+                    Toast.makeText(this, "No SMS app found for contact: " + contact, Toast.LENGTH_SHORT).show();
+                }
             }
         } else {
             Toast.makeText(this, "SMS permissions are required to share location", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void sendSOSAlert() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
-            // Example emergency contact number
-            String emergencyContact = "1234567890";
-            String message = "SOS! I need help. My current location is: " + tvLocation.getText().toString();
+//    private List<String> getEmergencyContacts() {
+//        List<String> contacts = new ArrayList<>();
+//        contacts.add("0833381053");  // Example contact
+//        contacts.add("0678121390");  // Example contact
+//        return contacts;
+//    }
 
-            Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
-            smsIntent.setData(Uri.parse("smsto:" + emergencyContact));
-            smsIntent.putExtra("sms_body", message);
-            if (smsIntent.resolveActivity(getPackageManager()) != null) {
-                startActivity(smsIntent);
-            } else {
-                Toast.makeText(this, "No SMS app found", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, "SMS permissions are required to send SOS alert", Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
     }
 
-    private void showHelpContacts() {
-        String[] helpContacts = {
-                "Police: 10111",
-                "Ambulance: 10177",
-                "Fire: 112",
-                "Women's Helpline: 181"
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Help Contacts")
-                .setItems(helpContacts, (dialog, which) -> {
-                    // Handle click on a help contact
-                    String contact = helpContacts[which];
-                    Intent dialIntent = new Intent(Intent.ACTION_DIAL);
-                    dialIntent.setData(Uri.parse("tel:" + contact.split(": ")[1]));
-                    if (dialIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(dialIntent);
-                    } else {
-                        Toast.makeText(this, "No dialer app found", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .create()
-                .show();
-    }
-
-    private void speakText(String text) {
-        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
-    }
-
-    private void listenToSpeech() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now");
-        speechRecognizer.startListening(intent);
-    }
-
-    private class SpeechRecognitionListener implements RecognitionListener {
-        @Override
-        public void onReadyForSpeech(Bundle params) {}
-
-        @Override
-        public void onBeginningOfSpeech() {}
-
-        @Override
-        public void onRmsChanged(float rmsdB) {}
-
-        @Override
-        public void onBufferReceived(byte[] buffer) {}
-
-        @Override
-        public void onEndOfSpeech() {}
-
-        @Override
-        public void onError(int error) {
-            Toast.makeText(MainActivity.this, "Recognition error: " + error, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onResults(Bundle results) {
-            ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            if (matches != null && !matches.isEmpty()) {
-                etInput.setText(matches.get(0));
-            }
-        }
-
-        @Override
-        public void onPartialResults(Bundle partialResults) {}
-
-        @Override
-        public void onEvent(int eventType, Bundle params) {}
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (speechRecognizer != null) {
-            speechRecognizer.destroy();
-        }
-        if (textToSpeech != null) {
-            textToSpeech.shutdown();
-        }
-        if (fusedLocationClient != null && locationCallback != null) {
+        super.onDestroy();
+        mapView.onDestroy();
+        if (fusedLocationClient != null) {
             fusedLocationClient.removeLocationUpdates(locationCallback);
         }
-        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 }

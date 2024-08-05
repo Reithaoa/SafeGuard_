@@ -9,32 +9,62 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="405dp"
-        android:layout_height="630dp"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Dropdown Menu Spinner -->
+        <Spinner
+            android:id="@+id/spinnerMenu"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:background="@color/pink"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="16dp" />
+
+        <!-- User's Name TextView (Initially Hidden) -->
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinnerMenu"
+            android:layout_margin="16dp"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+        <!-- Adding SafeGuard title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="SafeGuard"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnSpeak"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/pink"
             android:text="Speak" />
 
         <Button
             android:id="@+id/btnCreateProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Profile"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:background="@color/pink"
+            android:text="Create Profile" />
 
         <EditText
             android:id="@+id/etInput"
@@ -47,28 +77,26 @@
             android:id="@+id/btnListen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/pink"
             android:text="Listen" />
 
         <!-- MapView element -->
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
-            android:layout_width="350dp"
-            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLocation" />
+            app:layout_constraintTop_toBottomOf="@id/etInput" />
 
         <TextView
             android:id="@+id/tvLocation"
-            android:layout_width="350dp"
-            android:layout_height="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:text="Current Location: "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="15dp"
+            android:text="Current Location: " />
 
         <Button
             android:id="@+id/btnTrackMe"
@@ -76,10 +104,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:text="Track Me"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLocation" />
+            android:background="@color/pink"
+            android:text="Track Me" />
 
         <Button
             android:id="@+id/btnSOS"
@@ -87,10 +113,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:text="SOS"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnTrackMe" />
+            android:background="@color/pink"
+            android:text="SOS" />
 
         <Button
             android:id="@+id/btnHelp"
@@ -98,11 +122,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:text="Help"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnSOS" />
-
+            android:background="@color/pink"
+            android:text="Help" />
 
     </LinearLayout>
 
