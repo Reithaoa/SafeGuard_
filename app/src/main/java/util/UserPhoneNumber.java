@@ -67,12 +67,12 @@ public class UserPhoneNumber{
         if (countries.containsKey(country)) return country;
 
         // checking whether we have the given country in our map
-        if (countries.containsValue(country)) {
-            // retrieving the index of the country in the list
-            int countryIndex = countries.values().stream().toList().indexOf(country);
-            // retrieving the country region
-            return countries.keySet().stream().toList().get(countryIndex);
+        for (Map.Entry<String, String> entry : countries.entrySet()) {
+            if (entry.getValue().equals(country)) {
+                return entry.getKey(); // return the region (key)
+            }
         }
+
 
         return "";
     }
