@@ -46,7 +46,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     
     // for selecting the country code based off a drop down menu
-    implementation("com.googlecode.libphonenumber:8.13.12")
+    implementation("com.googlecode.libphonenumber:libphonenumber:8.13.12")
 
     // Add the dependencies for Firebase products you want to use
     implementation("com.google.firebase:firebase-analytics")
