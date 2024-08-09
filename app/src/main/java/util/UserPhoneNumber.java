@@ -1,4 +1,6 @@
 package util;
+import androidx.annotation.NonNull;
+
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 import com.google.i18n.phonenumbers.NumberParseException;
@@ -6,27 +8,29 @@ import java.util.*;
 
 
 public class UserPhoneNumber{
-    private PhoneNumber phoneNumber;
-    private String countryCode;
-    private String number;
+    private final PhoneNumber phoneNumber;
+    private final String countryCode;
+    private final String number;
     private final PhoneNumberUtil util = PhoneNumberUtil.getInstance();
     private final Map<String,String> countries = new HashMap<>();
 
 
-    public UserPhoneNumber(String number,String country){
+    public UserPhoneNumber(String number, String country) throws IllegalArgumentException {
         loadRegions();
-        setPhoneNumber(number,country);
-
-        try {
+        this.phoneNumber = setPhoneNumber(number, country);
+        if (this.phoneNumber != null) {
             this.countryCode = String.valueOf(this.phoneNumber.getCountryCode());
             this.number = String.valueOf(this.phoneNumber.getNationalNumber());
-        }catch (NullPointerException e){
-            e.getCause();
+        } else {
+            throw new IllegalArgumentException("Invalid phone number or country code");
         }
     }
 
     // no arg constructor used for getting phone number examples to display to user
     public UserPhoneNumber(){
+        this.phoneNumber = null;
+        this.countryCode = null;
+        this.number = null;
         loadRegions();
     }
 
@@ -40,11 +44,12 @@ public class UserPhoneNumber{
         return this.phoneNumber;
     }
 
-    private void setPhoneNumber(String number, String country){
+    private PhoneNumber setPhoneNumber(String number, String country){
         try {
-            phoneNumber = util.parse(number, getRegion(country));
+            return util.parse(number, getRegion(country));
         }catch (NumberParseException e){
             e.getCause();
+            return null;
         }
     }
     private void loadRegions(){
@@ -77,6 +82,7 @@ public class UserPhoneNumber{
         return "";
     }
 
+    @NonNull
     @Override
     public String toString(){
 
