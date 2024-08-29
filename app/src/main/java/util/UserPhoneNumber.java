@@ -15,6 +15,13 @@ public class UserPhoneNumber{
     private final Map<String,String> countries = new HashMap<>();
 
 
+    /**
+     * Formats the phone number appropriately. A given number will be formated according to the country
+     * selected by the user. All numbers will be saved as : + ctrCode-number
+     * @param number the users number
+     * @param country the country the number belongs to
+     * @throws IllegalArgumentException
+     */
     public UserPhoneNumber(String number, String country) throws IllegalArgumentException {
         loadRegions();
         this.phoneNumber = setPhoneNumber(number, country);
@@ -80,6 +87,11 @@ public class UserPhoneNumber{
 
 
         return "";
+    }
+
+    @NonNull
+    public Long getUsersPhoneNumber(){
+        return Objects.requireNonNull(Long.getLong(this.toString()));
     }
 
     @NonNull
