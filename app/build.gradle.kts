@@ -50,6 +50,12 @@ dependencies {
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
 
+    // NoSql database
+    implementation("com.google.firebase:firebase-firestore")
+
+    // for selecting the country code based off a drop down menu
+    implementation("com.googlecode.libphonenumber:libphonenumber:8.13.12")
+
     // Add the dependencies for Firebase products you want to use
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth:21.0.8")
