@@ -14,6 +14,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.telephony.SmsManager;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+//import android.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -30,8 +32,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -45,11 +49,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import android.view.MenuItem;
+import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+//import com.google.android.material.navigation.NavigationView;
+
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -65,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap gMap;
     private Spinner spinnerMenu;
     private TextView tvUserName;
+    private DrawerLayout drawerLayout;
+    private DatabaseHelper databaseHelper;
 
 
 
@@ -105,8 +120,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        databaseHelper = new DatabaseHelper(this);
 
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
+        // Initialize the drawer layout
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        // Initialize the toolbar and set it as the action bar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Set up the hamburger icon click listener
+        findViewById(R.id.hamburgerMenu).setOnClickListener(v -> openDrawer());
+
+        // Set up the navigation view item selected listener
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
         Spinner spinnerMenu = findViewById(R.id.spinnerMenu);
@@ -118,12 +149,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-        // Edge-to-Edge display setup
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+//        // Edge-to-Edge display setup
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
 
         // Initialize views
         btnSpeak = findViewById(R.id.btnSpeak);
@@ -231,14 +262,41 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         btnTrackMe.setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                // Get all contacts from the database
+                List<Contact> contacts = databaseHelper.getAllContacts();
+
+                if (!contacts.isEmpty()) {
+                    // Show a dialog or spinner to choose a contact
+                    showContactSelectionDialog(contacts);
+                } else {
+                    Toast.makeText(this, "No emergency contacts found", Toast.LENGTH_SHORT).show();
+                }
+
                 startLocationUpdates();
             } else {
                 requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
             }
         });
 
+
         btnSOS.setOnClickListener(v -> {
-            shareLocation();
+            List<Contact> contacts = databaseHelper.getAllContacts();
+            if (contacts.isEmpty()) {
+                Toast.makeText(this, "No emergency contacts found", Toast.LENGTH_SHORT).show();
+            } else {
+                fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                    if (location != null) {
+                        String message = "Emergency! I'm at: https://maps.google.com/?q=" + location.getLatitude() + "," + location.getLongitude();
+                        for (Contact contact : contacts) {
+                            SmsManager smsManager = SmsManager.getDefault();
+                            smsManager.sendTextMessage(contact.getPhone(), null, message, null, null);
+                        }
+                        Toast.makeText(this, "Location sent to emergency contacts!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Unable to get location", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
 
         btnHelp.setOnClickListener(v -> {
@@ -272,6 +330,60 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         };
     }
 
+    private void showContactSelectionDialog(List<Contact> contacts) {
+        // Convert List<Contact> to an array of strings for the dialog
+        String[] contactNames = new String[contacts.size()];
+        for (int i = 0; i < contacts.size(); i++) {
+            contactNames[i] = contacts.get(i).getName() + " - " + contacts.get(i).getPhone();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose Contact")
+                .setItems(contactNames, (dialog, which) -> {
+                    Contact selectedContact = contacts.get(which);
+                    sendLocationToContact(selectedContact);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void sendLocationToContact(Contact contact) {
+        if (contact != null && ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+            // Get current location and send SMS to selected contact
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                if (location != null) {
+                    String message = "Emergency! I'm at: https://maps.google.com/?q=" + location.getLatitude() + "," + location.getLongitude();
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(contact.getPhone(), null, message, null, null);
+                    Toast.makeText(this, "Location sent to " + contact.getName(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Unable to get location", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void openDrawer() {
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_history) {
+            Toast.makeText(this, "History selected", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_friends) {
+            Toast.makeText(this, "Friends selected", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_settings) {
+            Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_logout) {
+            Toast.makeText(this, "Log Out selected", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_feedback) {
+            Toast.makeText(this, "Feedback selected", Toast.LENGTH_SHORT).show();
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
     private void getLocationAndSend() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
