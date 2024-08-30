@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,8 +38,11 @@ public class SignInActivity extends AppCompatActivity {
     private String verificationId;
     private FirebaseAuth mAuth;
     private Spinner countries;
+    private TextView tvTopMessage, confirmCountry, otpMessage,confirmOtp;
+    private String number, code;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,11 @@ public class SignInActivity extends AppCompatActivity {
         btnVerifyOtp = findViewById(R.id.btnVerifyOtp);
         countries = findViewById(R.id.countries);
         ctrcode = findViewById(R.id.ctrCode);
+        tvTopMessage = findViewById(R.id.tvTopMessage);
+        confirmCountry= findViewById(R.id.confirmCountry);
+        confirmOtp = findViewById(R.id.confirmOtp);
+        otpMessage= findViewById(R.id.otpMessage);
+
 
 
 //        initializing the countries array
@@ -85,8 +95,8 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         btnSendOtp.setOnClickListener(v -> {
-            String number = etPhoneNumber.getText().toString();
-            String code = ctrcode.getText().toString();
+            number = etPhoneNumber.getText().toString();
+            code = ctrcode.getText().toString();
             String phoneNumber = new UserPhoneNumber(number,code).toString();
             if (TextUtils.isEmpty(phoneNumber)) {
                 Toast.makeText(SignInActivity.this, "Enter mobile number", Toast.LENGTH_SHORT).show();
@@ -126,13 +136,35 @@ public class SignInActivity extends AppCompatActivity {
                     public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                         super.onCodeSent(s, forceResendingToken);
                         verificationId = s;
-                        etOtp.setVisibility(View.VISIBLE);
-                        btnVerifyOtp.setVisibility(View.VISIBLE);
+                        mainSignInWidgetsDisappear(false);
+                        otpSignInWidgets(true);
                         Toast.makeText(SignInActivity.this, "OTP sent", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
     }
+
+    private void otpSignInWidgets(Boolean visibility){
+        int visible = (visibility) ? View.VISIBLE : View.GONE;
+        String newMessage = confirmOtp.getText().toString() + " (" + code + ") " + number;
+        confirmOtp.setText(newMessage);
+
+        etOtp.setVisibility(visible);
+        btnVerifyOtp.setVisibility(visible);
+        otpMessage.setVisibility(visible);
+        confirmOtp.setVisibility(visible);
+    }
+
+    private void mainSignInWidgetsDisappear(Boolean visibility){
+        int visible = (visibility) ? View.VISIBLE : View.GONE;
+        etPhoneNumber.setVisibility(visible);
+        btnSendOtp.setVisibility(visible);
+        countries.setVisibility(visible);
+        ctrcode.setVisibility(visible);
+        tvTopMessage.setVisibility(visible);
+        confirmCountry.setVisibility(visible);
+    }
+
 
     private String validateCountryCode(EditText text){
         ArrayList<String> code = new ArrayList<>(Arrays.asList(text.getText().toString().split("")));

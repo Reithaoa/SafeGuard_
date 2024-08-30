@@ -7,7 +7,6 @@
     android:padding="16dp"
     tools:context=".SignInActivity">
 
-
     <TextView
         android:id="@+id/tvTopMessage"
         android:layout_width="wrap_content"
@@ -27,8 +26,8 @@
         android:layout_width="298dp"
         android:layout_height="52dp"
         android:layout_marginStart="32dp"
-        android:text="Send OTP"
         android:background="@drawable/sigin_spinner_border"
+        android:text="Send OTP"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/countries"
         app:layout_constraintHorizontal_bias="1.0"
@@ -70,17 +69,19 @@
 
     <EditText
         android:id="@+id/etOtp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_width="295dp"
+        android:layout_height="51dp"
+        android:background="@drawable/sigin_spinner_border"
         android:hint="Enter OTP"
         android:inputType="number"
         android:textColorHint="@color/cardview_shadow_start_color"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.535"
+        app:layout_constraintHorizontal_bias="0.456"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnSendOtp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.456" />
 
     <Button
         android:id="@+id/btnVerifyOtp"
@@ -91,9 +92,10 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSendOtp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.604" />
 
     <TextView
         android:id="@+id/confirmCountry"
@@ -110,6 +112,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTopMessage"
         app:layout_constraintVertical_bias="0.091" />
+
+    <TextView
+        android:id="@+id/confirmOtp"
+        android:layout_width="303dp"
+        android:layout_height="42dp"
+        android:text="We've sent an SMS with an activation code to your phone"
+        android:textAlignment="center"
+        android:textColor="#808080"
+        android:textSize="8sp"
+        android:visibility="gone"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/etPhoneNumber"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.447"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTopMessage"
+        app:layout_constraintVertical_bias="0.186" />
+
+    <TextView
+        android:id="@+id/otpMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Code"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.148"
+        />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group"
