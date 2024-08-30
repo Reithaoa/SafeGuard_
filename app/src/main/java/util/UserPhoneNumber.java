@@ -41,8 +41,8 @@ public class UserPhoneNumber{
         loadRegions();
     }
 
-    public PhoneNumber UserPhoneNumberExample(String country){
-        return this.util.getExampleNumber(getRegion(country));
+    public Long UserPhoneNumberExample(String country){
+        return this.util.getExampleNumber(getRegion(country)).getNationalNumber();
     }
 
 
