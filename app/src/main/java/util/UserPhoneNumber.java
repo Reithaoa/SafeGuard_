@@ -77,9 +77,10 @@ public class UserPhoneNumber{
         return this.countries;
     }
 
-    public ArrayList<String> getCountries(){
-        Collection<String> data = this.countries.values();
-        return new ArrayList<>(data);
+    public List<String> getCountries(){
+        ArrayList<String> data = new ArrayList<>(this.countries.values());
+        Collections.sort(data);
+        return data;
     }
 
     private String getRegion(String country){
