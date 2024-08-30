@@ -65,10 +65,10 @@
 
             <Spinner
                 android:id="@+id/spinnerMenu"
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:background="@color/pink"
-                android:layout_margin="16dp" />
+                android:layout_width="92dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@color/pink" />
 
             <TextView
                 android:id="@+id/tvUserName"
