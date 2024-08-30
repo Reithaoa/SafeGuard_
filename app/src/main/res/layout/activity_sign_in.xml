@@ -12,58 +12,60 @@
         android:id="@+id/tvTopMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:text="Your phone number"
         android:textColor="@color/black"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.148" />
 
     <Button
         android:id="@+id/btnSendOtp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="298dp"
+        android:layout_height="52dp"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="180dp"
         android:text="Send OTP"
+        android:background="@drawable/sigin_spinner_border"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/countries"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/countries"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.605" />
 
     <EditText
         android:id="@+id/ctrCode"
-        android:layout_width="88dp"
+        android:layout_width="80dp"
         android:layout_height="51dp"
-        android:layout_marginBottom="12dp"
+        android:background="@drawable/ctr_code"
         android:hint="+xxx"
         android:inputType="phone"
         android:maxLength="4"
         android:textColorHint="@color/cardview_shadow_start_color"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnSendOtp"
-        app:layout_constraintEnd_toEndOf="@+id/etPhoneNumber"
-        app:layout_constraintHorizontal_bias="0.13"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/countries"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.456" />
 
     <EditText
         android:id="@+id/etPhoneNumber"
-        android:layout_width="224dp"
+        android:layout_width="210dp"
         android:layout_height="51dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="12dp"
+        android:background="@drawable/phone_number_box"
         android:hint="xxx-xxx-xxx"
         android:inputType="phone"
         android:maxLength="10"
         android:textColorHint="@color/cardview_shadow_start_color"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnSendOtp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.448"
-        app:layout_constraintStart_toEndOf="@+id/ctrCode" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/countries"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.456" />
 
     <EditText
         android:id="@+id/etOtp"
@@ -113,17 +115,18 @@
 
     <Spinner
         android:id="@+id/countries"
-        android:layout_width="302dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="30dp"
-        android:background="@color/cardview_light_background"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="290dp"
+        android:layout_height="51dp"
+        android:background="@drawable/sigin_spinner_border"
+        android:dropDownWidth="match_parent"
+        android:spinnerMode="dialog"
+        android:textAlignment="textStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/confirmCountry"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmCountry" />
+        app:layout_constraintStart_toStartOf="@+id/confirmCountry"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.365" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group3"
