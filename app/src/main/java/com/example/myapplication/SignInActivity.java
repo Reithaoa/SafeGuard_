@@ -2,7 +2,10 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +23,8 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import util.UserPhoneNumber;
@@ -60,7 +64,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedCountry = countries.getSelectedItem().toString();
-                Toast.makeText(getApplicationContext(), selectedCountry,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), selectedCountry,Toast.LENGTH_SHORT).show();
                 ctrcode.setText(String.format("+%s", new UserPhoneNumber().getRegionCode(selectedCountry)));
             }
 
@@ -74,7 +78,12 @@ public class SignInActivity extends AppCompatActivity {
 
 
         // add check for invalid region code
-
+        ctrcode.setOnFocusChangeListener((view, hasFocus) ->{
+            if(!hasFocus){ // we have lost focus of the editor
+                ctrcode.setText(validateCountryCode(ctrcode));
+                setCountry(ctrcode.getText().toString(),countriesList);
+            }
+        });
 
         btnSendOtp.setOnClickListener(v -> {
             String ctrCode = ctrcode.getText().toString();
@@ -123,6 +132,26 @@ public class SignInActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    private String validateCountryCode(EditText text){
+        ArrayList<String> code = new ArrayList<>(Arrays.asList(text.getText().toString().split("")));
+        if(!code.get(0).equals("+")){
+            code.add(0,"+");
+            StringBuilder string = new StringBuilder();
+            for (String c : code){
+                string.append(c);
+            }
+           return string.toString();
+        }
+
+        return text.getText().toString();
+
+    }
+
+    private void setCountry(String code,List<String> countryList){
+        int indexOfCountry = countryList.indexOf(new UserPhoneNumber().getCountry(code));
+        countries.setSelection(indexOfCountry);
     }
 
     private void verifyOtp(String code) {
