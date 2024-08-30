@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:text="Your phone number"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,14 +84,16 @@
 
     <Button
         android:id="@+id/btnVerifyOtp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="298dp"
+        android:layout_height="52dp"
+        android:background="@drawable/sigin_spinner_border"
         android:text="Verify OTP"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etOtp" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSendOtp" />
 
     <TextView
         android:id="@+id/confirmCountry"
@@ -98,7 +101,8 @@
         android:layout_height="42dp"
         android:text="Please confirm your country code and enter your phone number"
         android:textAlignment="center"
-        android:textSize="16sp"
+        android:textColor="#808080"
+        android:textSize="8sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/etPhoneNumber"
         app:layout_constraintEnd_toEndOf="parent"
