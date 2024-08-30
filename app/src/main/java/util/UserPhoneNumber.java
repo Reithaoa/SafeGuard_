@@ -78,7 +78,7 @@ public class UserPhoneNumber{
 
     private PhoneNumber setPhoneNumber(String number, String country){
         try {
-            return util.parse(number, getRegion(country));
+            return util.parse(number, getRegion(Integer.parseInt(country)));
         }catch (NumberParseException e){
             e.getCause();
             return null;

@@ -64,7 +64,6 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedCountry = countries.getSelectedItem().toString();
-//                Toast.makeText(getApplicationContext(), selectedCountry,Toast.LENGTH_SHORT).show();
                 ctrcode.setText(String.format("+%s", new UserPhoneNumber().getRegionCode(selectedCountry)));
             }
 
@@ -86,13 +85,14 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         btnSendOtp.setOnClickListener(v -> {
-            String ctrCode = ctrcode.getText().toString();
-            String phoneNumber = ctrCode + etPhoneNumber.getText().toString();
+            String number = etPhoneNumber.getText().toString();
+            String code = ctrcode.getText().toString();
+            String phoneNumber = new UserPhoneNumber(number,code).toString();
             if (TextUtils.isEmpty(phoneNumber)) {
                 Toast.makeText(SignInActivity.this, "Enter mobile number", Toast.LENGTH_SHORT).show();
                 return;
             }
-            sendOtp(phoneNumber);
+            sendOtp("+" + phoneNumber);
         });
 
         btnVerifyOtp.setOnClickListener(v -> {
