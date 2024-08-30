@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,16 +18,16 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.i18n.phonenumbers.Phonenumber;
 
-import java.util.ArrayList;
-import java.util.Map;
+
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import util.UserPhoneNumber;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private EditText etPhoneNumber, etOtp;
+    private EditText etPhoneNumber, etOtp, ctrcode;
     private Button btnSendOtp, btnVerifyOtp;
     private String verificationId;
     private FirebaseAuth mAuth;
@@ -46,12 +46,31 @@ public class SignInActivity extends AppCompatActivity {
         btnSendOtp = findViewById(R.id.btnSendOtp);
         btnVerifyOtp = findViewById(R.id.btnVerifyOtp);
         countries = findViewById(R.id.countries);
+        ctrcode = findViewById(R.id.ctrCode);
+
 
 //        initializing the countries array
-        ArrayList<String> countriesList = new UserPhoneNumber().getCountries(); // loading all the countries
+        List<String> countriesList = new UserPhoneNumber().getCountries(); // loading all the countries
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,countriesList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        countries.setAdapter(adapter);
+        countries.setAdapter(adapter); // setting the countries to the spinner
+
+
+        countries.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedCountry = countries.getSelectedItem().toString();
+                Toast.makeText(getApplicationContext(), selectedCountry,Toast.LENGTH_SHORT).show();
+                ctrcode.setText(String.format("+%s", new UserPhoneNumber().getRegionCode(selectedCountry)));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+
+        });
+
 
 
 
