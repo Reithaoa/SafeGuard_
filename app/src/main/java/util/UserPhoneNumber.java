@@ -51,6 +51,15 @@ public class UserPhoneNumber{
         return String.valueOf(util.getCountryCodeForRegion(getRegion(region)));
     }
 
+    public String getRegion(int code){
+        return util.getRegionCodeForCountryCode(code);
+    }
+
+    public boolean validateRegion(int code){
+        String region = getRegion(code);
+        return (region != null) && !region.isEmpty();
+    }
+
     public String getCountryCode(){return this.countryCode;}
     public String getNumber(){return this.number;}
     public PhoneNumber getPhoneNumber(){

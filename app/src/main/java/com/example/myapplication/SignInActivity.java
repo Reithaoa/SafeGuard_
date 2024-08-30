@@ -73,11 +73,12 @@ public class SignInActivity extends AppCompatActivity {
 
 
 
-
+        // add check for invalid region code
 
 
         btnSendOtp.setOnClickListener(v -> {
-            String phoneNumber = etPhoneNumber.getText().toString();
+            String ctrCode = ctrcode.getText().toString();
+            String phoneNumber = ctrCode + etPhoneNumber.getText().toString();
             if (TextUtils.isEmpty(phoneNumber)) {
                 Toast.makeText(SignInActivity.this, "Enter mobile number", Toast.LENGTH_SHORT).show();
                 return;

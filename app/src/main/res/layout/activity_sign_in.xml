@@ -55,7 +55,7 @@
         android:layout_height="51dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="12dp"
-        android:hint="phone number"
+        android:hint="xxx-xxx-xxx"
         android:inputType="phone"
         android:maxLength="10"
         android:textColorHint="@color/cardview_shadow_start_color"
