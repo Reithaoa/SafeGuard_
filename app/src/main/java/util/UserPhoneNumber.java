@@ -45,6 +45,12 @@ public class UserPhoneNumber{
         return this.util.getExampleNumber(getRegion(country));
     }
 
+
+    public String getRegionCode(String region){
+        // retrieves the regional code for the country
+        return String.valueOf(util.getCountryCodeForRegion(getRegion(region)));
+    }
+
     public String getCountryCode(){return this.countryCode;}
     public String getNumber(){return this.number;}
     public PhoneNumber getPhoneNumber(){
