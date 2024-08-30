@@ -73,6 +73,15 @@ public class UserPhoneNumber{
         }
     }
 
+    public Map<String,String> getRegions(){
+        return this.countries;
+    }
+
+    public ArrayList<String> getCountries(){
+        Collection<String> data = this.countries.values();
+        return new ArrayList<>(data);
+    }
+
     private String getRegion(String country){
         // the key we want to return
 

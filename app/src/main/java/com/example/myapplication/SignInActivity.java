@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +18,12 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.i18n.phonenumbers.Phonenumber;
 
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import util.UserPhoneNumber;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -25,6 +31,8 @@ public class SignInActivity extends AppCompatActivity {
     private Button btnSendOtp, btnVerifyOtp;
     private String verificationId;
     private FirebaseAuth mAuth;
+    private Spinner countries;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,17 @@ public class SignInActivity extends AppCompatActivity {
         etOtp = findViewById(R.id.etOtp);
         btnSendOtp = findViewById(R.id.btnSendOtp);
         btnVerifyOtp = findViewById(R.id.btnVerifyOtp);
+        countries = findViewById(R.id.countries);
+
+//        initializing the countries array
+        ArrayList<String> countriesList = new UserPhoneNumber().getCountries(); // loading all the countries
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,countriesList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        countries.setAdapter(adapter);
+
+
+
+
 
         btnSendOtp.setOnClickListener(v -> {
             String phoneNumber = etPhoneNumber.getText().toString();
