@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">SafeGuard</string>
     <string name="title_activity_maps">MapsActivity</string>
 
     <string-array name="menu_options">

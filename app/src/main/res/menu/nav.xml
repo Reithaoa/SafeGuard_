@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Main Menu">
+        <menu>
+            <item
+                android:id="@+id/nav_profile"
+                android:title="Profile" />
+            <item
+                android:id="@+id/nav_map"
+                android:title="Map" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_settings"
+        android:title="Settings" />
+</menu>

@@ -10,10 +10,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import FirestoreController.Profile;
+
 public class ProfileActivity extends AppCompatActivity {
 
     private EditText etName, etSurname, etAge, etHeight, etRace, etEmergencyContact1, etEmergencyContact2;
     private Button btnSaveProfile;
+    private final String country = SignInActivity.selectedCountry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,14 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
         } else {
             // Save profile information (e.g., using SharedPreferences, SQLite, or a server)
-            Toast.makeText(this, "Profile saved", Toast.LENGTH_SHORT).show();
+            try {
+                FirestoreController.Contact em1 = new FirestoreController.Contact("", emergencyContact1, country);
+                FirestoreController.Contact em2 = new FirestoreController.Contact("", emergencyContact2, country);
+                new Profile(name, surname, height, Integer.parseInt(age), race, em1, em2).createProfile();
+                Toast.makeText(this, "Profile saved", Toast.LENGTH_SHORT).show();
+            }catch (Exception e){
+                Toast.makeText(this, "Failed, please try again.", Toast.LENGTH_SHORT).show();
+            }
         }
         Intent resultIntent = new Intent();
         // return to main screen

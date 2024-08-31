@@ -51,6 +51,12 @@ public class UserPhoneNumber{
         return String.valueOf(util.getCountryCodeForRegion(getRegion(region)));
     }
 
+    public String getRegionCodeByCountry(String country){
+        // retrieves the regional code for the country
+        String region = getRegion(country);
+        return String.valueOf(util.getCountryCodeForRegion(getRegion(region)));
+    }
+
     public String getRegion(int code){
         return util.getRegionCodeForCountryCode(code);
     }
@@ -108,7 +114,7 @@ public class UserPhoneNumber{
         return data;
     }
 
-    private String getRegion(String country){
+    public String getRegion(String country){
         // the key we want to return
 
         if (countries.containsKey(country)) return country;
