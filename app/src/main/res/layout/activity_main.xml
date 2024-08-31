@@ -42,7 +42,13 @@
 
             <View
                 android:layout_width="30dp"
-                android:layout_height="10dp"
+                android:layout_height="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/colorAccent" />
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="4dp"
                 android:layout_marginBottom="4dp"
                 android:background="@color/colorAccent" />
 
@@ -52,6 +58,19 @@
                 android:background="@color/colorAccent" />
         </LinearLayout>
 
+<!--        &lt;!&ndash; SafeGuard TextView &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/tvSafeGuard"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="SafeGuard"-->
+<!--            android:textColor="@color/colorAccent"-->
+<!--            android:textSize="28sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="16dp"/>-->
         <!-- SafeGuard TextView -->
         <TextView
             android:id="@+id/tvSafeGuard"
@@ -59,8 +78,7 @@
             android:layout_height="wrap_content"
             android:text="SafeGuard"
             android:textColor="@color/colorAccent"
-            android:textSize="28sp"
-            android:textStyle="bold"
+            android:textAppearance="@style/BoldTextAppearance"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="16dp"
@@ -92,15 +110,16 @@
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:visibility="gone" />
-
-            <Button
-                android:id="@+id/btnCreateProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/buttons"
-                android:text="Create Profile" />
+<!--IF YOU UNCOMMENT HERE, IT SHOULD RE-ALIGN IT FOR YOU-->
+<!--            <Button-->
+<!--                android:id="@+id/btnCreateProfile"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="35dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:background="@drawable/buttons"-->
+<!--                android:text="Create Profile" />-->
 
 
             <EditText
