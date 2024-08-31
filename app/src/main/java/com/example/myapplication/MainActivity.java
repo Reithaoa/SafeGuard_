@@ -140,12 +140,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
-        Spinner spinnerMenu = findViewById(R.id.spinnerMenu);
-        List<String> menuOptions = Arrays.asList(getResources().getStringArray(R.array.menu_options));
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.menu_options, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMenu.setAdapter(adapter);
+//        Spinner spinnerMenu = findViewById(R.id.spinnerMenu);
+//        List<String> menuOptions = Arrays.asList(getResources().getStringArray(R.array.menu_options));
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                R.array.menu_options, android.R.layout.simple_spinner_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerMenu.setAdapter(adapter);
 
 
 
