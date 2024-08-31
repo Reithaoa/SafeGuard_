@@ -40,6 +40,7 @@ public class SignInActivity extends AppCompatActivity {
     private Spinner countries;
     private TextView tvTopMessage, confirmCountry, otpMessage,confirmOtp;
     private String number, code;
+    public static String selectedCountry;
 
 
     @SuppressLint("MissingInflatedId")
@@ -73,7 +74,7 @@ public class SignInActivity extends AppCompatActivity {
         countries.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String selectedCountry = countries.getSelectedItem().toString();
+                selectedCountry = countries.getSelectedItem().toString();
                 ctrcode.setText(String.format("+%s", new UserPhoneNumber().getRegionCode(selectedCountry)));
             }
 
