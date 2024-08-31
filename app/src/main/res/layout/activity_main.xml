@@ -32,9 +32,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="16dp">
-
             <View
                 android:layout_width="30dp"
                 android:layout_height="4dp"
@@ -43,9 +42,9 @@
 
             <View
                 android:layout_width="30dp"
-                android:layout_height="4dp"
-                android:background="@color/colorAccent"
-                android:layout_marginBottom="4dp" />
+                android:layout_height="10dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/colorAccent" />
 
             <View
                 android:layout_width="30dp"
@@ -53,23 +52,19 @@
                 android:background="@color/colorAccent" />
         </LinearLayout>
 
+        <!-- SafeGuard TextView -->
         <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
+            android:id="@+id/tvSafeGuard"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
             android:text="SafeGuard"
             android:textColor="@color/colorAccent"
-            android:textSize="24sp"
+            android:textSize="28sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
-            android:textStyle="bold" />
-
-
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"/>
 
         <!-- Main Content -->
         <LinearLayout
@@ -115,6 +110,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/buttons"
                 android:hint="Enter text here"
+                android:textAlignment="center"
                 android:textColorHint="@color/cardview_shadow_start_color" />
 
 
