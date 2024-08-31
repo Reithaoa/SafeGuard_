@@ -41,8 +41,39 @@ public class UserPhoneNumber{
         loadRegions();
     }
 
-    public PhoneNumber UserPhoneNumberExample(String country){
-        return this.util.getExampleNumber(getRegion(country));
+    public Long UserPhoneNumberExample(String country){
+        return this.util.getExampleNumber(getRegion(country)).getNationalNumber();
+    }
+
+
+    public String getRegionCode(String region){
+        // retrieves the regional code for the country
+        return String.valueOf(util.getCountryCodeForRegion(getRegion(region)));
+    }
+
+    public String getRegionCodeByCountry(String country){
+        // retrieves the regional code for the country
+        String region = getRegion(country);
+        return String.valueOf(util.getCountryCodeForRegion(getRegion(region)));
+    }
+
+    public String getRegion(int code){
+        return util.getRegionCodeForCountryCode(code);
+    }
+
+    public String getCountry(String code){
+        int codeInt = Integer.parseInt(code);
+
+        if(validateRegion(codeInt)){
+            String region = getRegion(codeInt);
+            return countries.get(region);
+        }
+        return "";
+    }
+
+    public boolean validateRegion(int code){
+        String region = getRegion(code);
+        return (region != null) && !region.isEmpty();
     }
 
     public String getCountryCode(){return this.countryCode;}
@@ -53,7 +84,7 @@ public class UserPhoneNumber{
 
     private PhoneNumber setPhoneNumber(String number, String country){
         try {
-            return util.parse(number, getRegion(country));
+            return util.parse(number, getRegion(Integer.parseInt(country)));
         }catch (NumberParseException e){
             e.getCause();
             return null;
@@ -73,7 +104,17 @@ public class UserPhoneNumber{
         }
     }
 
-    private String getRegion(String country){
+    public Map<String,String> getRegions(){
+        return this.countries;
+    }
+
+    public List<String> getCountries(){
+        ArrayList<String> data = new ArrayList<>(this.countries.values());
+        Collections.sort(data);
+        return data;
+    }
+
+    public String getRegion(String country){
         // the key we want to return
 
         if (countries.containsKey(country)) return country;

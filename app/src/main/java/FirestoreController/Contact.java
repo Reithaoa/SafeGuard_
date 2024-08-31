@@ -8,8 +8,13 @@ public class Contact {
 
     public Contact(String name, String number, String country){
         this.name = name;
-        UserPhoneNumber correctNumber = new UserPhoneNumber(number, country);
+        String region = new UserPhoneNumber().getRegionCodeByCountry(country);
+        UserPhoneNumber correctNumber = new UserPhoneNumber(number, region);
         this.number = correctNumber.toString();
+    }
+
+    public Contact(String number, String country, boolean countryOnly){
+       this("",number,country);
     }
 
     public Contact(String name, String number){

@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -22,19 +23,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-//import android.widget.Toolbar;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -52,20 +49,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import android.view.MenuItem;
-import android.widget.Toast;
-import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-//import com.google.android.material.navigation.NavigationView;
 
-
-
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
     private SpeechRecognizer speechRecognizer;
     private TextToSpeech textToSpeech;
@@ -81,56 +68,65 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrawerLayout drawerLayout;
     private DatabaseHelper databaseHelper;
 
-
+    private PermissionHandler permissionHandler;
 
     private final ActivityResultLauncher<Intent> profileActivityLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    // Handle the result from ProfileActivity
                     Toast.makeText(MainActivity.this, "Profile created successfully", Toast.LENGTH_SHORT).show();
                 }
             });
 
     private final ActivityResultLauncher<String[]> requestSmsPermissionsLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
-                Boolean sendSmsGranted = result.containsKey(Manifest.permission.SEND_SMS) && result.get(Manifest.permission.SEND_SMS);
-                Boolean receiveSmsGranted = result.containsKey(Manifest.permission.RECEIVE_SMS) && result.get(Manifest.permission.RECEIVE_SMS);
-                Boolean readSmsGranted = result.containsKey(Manifest.permission.READ_SMS) && result.get(Manifest.permission.READ_SMS);
+                Boolean sendSmsGranted = result.get(Manifest.permission.SEND_SMS);
+                Boolean receiveSmsGranted = result.get(Manifest.permission.RECEIVE_SMS);
+                Boolean readSmsGranted = result.get(Manifest.permission.READ_SMS);
 
                 if (sendSmsGranted != null && receiveSmsGranted != null && readSmsGranted != null) {
-                    if (sendSmsGranted && receiveSmsGranted && readSmsGranted) {
-                        Toast.makeText(this, "SMS permissions granted", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "SMS permissions are required to send alerts", Toast.LENGTH_SHORT).show();
-                    }
+                    permissionHandler.handleSmsPermissionsResult(sendSmsGranted, receiveSmsGranted, readSmsGranted);
                 }
             });
 
-    private final ActivityResultLauncher<String> requestLocationPermissionLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-                if (isGranted) {
-                    startLocationUpdates();
-                } else {
-                    Toast.makeText(this, "Location permission is needed for real-time tracking and emergency alerts", Toast.LENGTH_SHORT).show();
+    private final ActivityResultLauncher<String[]> requestLocationPermissionsLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+                Boolean fineLocationGranted = result.get(Manifest.permission.ACCESS_FINE_LOCATION);
+                Boolean coarseLocationGranted = result.get(Manifest.permission.ACCESS_COARSE_LOCATION);
+
+                if (fineLocationGranted != null && coarseLocationGranted != null) {
+                    permissionHandler.handleLocationPermissionsResult(fineLocationGranted, coarseLocationGranted, fusedLocationClient, locationCallback);
+                }
+            });
+
+    private final ActivityResultLauncher<String[]> requestContactsPermissionsLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+                Boolean readContactsGranted = result.get(Manifest.permission.READ_CONTACTS);
+                Boolean writeContactsGranted = result.get(Manifest.permission.WRITE_CONTACTS);
+
+                if (readContactsGranted != null && writeContactsGranted != null) {
+                    permissionHandler.handleContactsPermissionsResult(readContactsGranted, writeContactsGranted);
                 }
             });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         databaseHelper = new DatabaseHelper(this);
+        permissionHandler = new PermissionHandler(this);
 
+        requestNecessaryPermissions();
 
-
+        //Remove background name
+//        getTitle();
+//        getSupportActionBar().hide();
+//        setContentView(R.layout.activity_main);
         // Initialize the drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
 
         // Initialize the toolbar and set it as the action bar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Set up the hamburger icon click listener
         findViewById(R.id.hamburgerMenu).setOnClickListener(v -> openDrawer());
 
         // Set up the navigation view item selected listener
@@ -138,23 +134,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-
-        Spinner spinnerMenu = findViewById(R.id.spinnerMenu);
-        List<String> menuOptions = Arrays.asList(getResources().getStringArray(R.array.menu_options));
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.menu_options, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMenu.setAdapter(adapter);
-
-
-
-//        // Edge-to-Edge display setup
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
 
         // Initialize views
         btnSpeak = findViewById(R.id.btnSpeak);
@@ -174,13 +153,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Initialize FusedLocationProviderClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        Button btnSOS = findViewById(R.id.btnSOS);
-        btnSOS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getLocationAndSend();
-            }
-        });
+        btnSOS.setOnClickListener(v -> getLocationAndSend());
 
         // Initialize Speech Recognizer
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
@@ -261,265 +234,177 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         btnTrackMe.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                // Get all contacts from the database
+            if (permissionHandler.hasLocationPermission()) {
                 List<Contact> contacts = databaseHelper.getAllContacts();
-
                 if (!contacts.isEmpty()) {
-                    // Show a dialog or spinner to choose a contact
                     showContactSelectionDialog(contacts);
+                    startLocationUpdates();
                 } else {
                     Toast.makeText(this, "No emergency contacts found", Toast.LENGTH_SHORT).show();
                 }
-
-                startLocationUpdates();
             } else {
-                requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+                permissionHandler.requestLocationPermission(requestLocationPermissionsLauncher);
             }
         });
 
-
         btnSOS.setOnClickListener(v -> {
-            List<Contact> contacts = databaseHelper.getAllContacts();
-            if (contacts.isEmpty()) {
-                Toast.makeText(this, "No emergency contacts found", Toast.LENGTH_SHORT).show();
+            if (permissionHandler.hasSmsPermissions()) {
+                List<Contact> contacts = databaseHelper.getAllContacts();
+                if (contacts.isEmpty()) {
+                    Toast.makeText(this, "No emergency contacts found", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (permissionHandler.hasLocationPermission()) {
+                        try {
+                            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                                if (location != null) {
+                                    String message = "Emergency! I'm at: https://maps.google.com/?q=" + location.getLatitude() + "," + location.getLongitude();
+                                    for (Contact contact : contacts) {
+                                        SmsManager smsManager = SmsManager.getDefault();
+                                        smsManager.sendTextMessage(contact.getPhone(), null, message, null, null);
+                                    }
+                                    Toast.makeText(MainActivity.this, "SOS message sent", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Unable to get location", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } catch (SecurityException e) {
+                            Toast.makeText(MainActivity.this, "Location permission is required to send SOS message.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        permissionHandler.requestLocationPermission(requestLocationPermissionsLauncher);
+                    }
+                }
             } else {
+                permissionHandler.requestSmsPermissions(requestSmsPermissionsLauncher);
+            }
+        });
+
+        btnHelp.setOnClickListener(v -> showHelpDialog());
+    }
+
+    private void requestNecessaryPermissions() {
+        List<String> permissionsToRequest = new ArrayList<>();
+
+        if (!permissionHandler.hasLocationPermission()) {
+            permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            permissionsToRequest.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+        if (!permissionHandler.hasSmsPermissions()) {
+            permissionsToRequest.add(Manifest.permission.SEND_SMS);
+            permissionsToRequest.add(Manifest.permission.RECEIVE_SMS);
+            permissionsToRequest.add(Manifest.permission.READ_SMS);
+        }
+
+        if (!permissionsToRequest.isEmpty()) {
+            String[] permissionsArray = permissionsToRequest.toArray(new String[0]);
+            requestContactsPermissionsLauncher.launch(permissionsArray);
+            requestLocationPermissionsLauncher.launch(permissionsArray);
+            requestSmsPermissionsLauncher.launch(permissionsArray);
+
+        }
+    }
+
+    private void showContactSelectionDialog(List<Contact> contacts) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Contact");
+
+        String[] contactNames = new String[contacts.size()];
+        for (int i = 0; i < contacts.size(); i++) {
+            contactNames[i] = contacts.get(i).getName();
+        }
+
+        builder.setItems(contactNames, (dialog, which) -> {
+            Contact selectedContact = contacts.get(which);
+            String message = "Emergency! I'm at: https://maps.google.com/?q=" + gMap.getCameraPosition().target.latitude + "," + gMap.getCameraPosition().target.longitude;
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(selectedContact.getPhone(), null, message, null, null);
+            Toast.makeText(MainActivity.this, "SOS message sent to " + selectedContact.getName(), Toast.LENGTH_SHORT).show();
+        });
+
+        builder.show();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void startLocationUpdates() {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    gMap.clear();
+                    gMap.addMarker(new MarkerOptions().position(latLng).title("Current Location"));
+                    gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                }
+            }
+        };
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, getMainLooper());
+    }
+
+    private void getLocationAndSend() {
+        if (permissionHandler.hasLocationPermission()) {
+            try {
                 fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
                     if (location != null) {
                         String message = "Emergency! I'm at: https://maps.google.com/?q=" + location.getLatitude() + "," + location.getLongitude();
-                        for (Contact contact : contacts) {
-                            SmsManager smsManager = SmsManager.getDefault();
-                            smsManager.sendTextMessage(contact.getPhone(), null, message, null, null);
-                        }
-                        Toast.makeText(this, "Location sent to emergency contacts!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(MainActivity.this, "Unable to get location", Toast.LENGTH_SHORT).show();
                     }
                 });
+            } catch (SecurityException e) {
+                Toast.makeText(MainActivity.this, "Location permission is required.", Toast.LENGTH_SHORT).show();
             }
-        });
-
-        btnHelp.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Help");
-            builder.setMessage("This is a safety app to help you share your location in case of emergencies.\n\n" +
-                    "1. Speak: Convert your speech to text.\n" +
-                    "2. Listen: Convert text to speech.\n" +
-                    "3. Create Profile: Create your profile and add emergency contacts.\n" +
-                    "4. Track Me: Start location updates to get your real-time location.\n" +
-                    "5. SOS: Send your current location to your emergency contacts.\n" +
-                    "6. Help: Show this help message.");
-            builder.setPositiveButton("OK", null);
-            builder.show();
-        });
-
-        // Request necessary permissions
-        requestSmsPermissionsLauncher.launch(new String[]{Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS});
-
-        // Initialize location callback
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(@NonNull LocationResult locationResult) {
-                if (locationResult != null) {
-                    Location location = locationResult.getLastLocation();
-                    if (location != null) {
-                        updateLocation(location);
-                    }
-                }
-            }
-        };
+        } else {
+            permissionHandler.requestLocationPermission(requestLocationPermissionsLauncher);
+        }
     }
 
-    private void showContactSelectionDialog(List<Contact> contacts) {
-        // Convert List<Contact> to an array of strings for the dialog
-        String[] contactNames = new String[contacts.size()];
-        for (int i = 0; i < contacts.size(); i++) {
-            contactNames[i] = contacts.get(i).getName() + " - " + contacts.get(i).getPhone();
-        }
-
+    private void showHelpDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose Contact")
-                .setItems(contactNames, (dialog, which) -> {
-                    Contact selectedContact = contacts.get(which);
-                    sendLocationToContact(selectedContact);
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+        builder.setTitle("Help");
+        builder.setMessage("Here's how to use the app:\n\n" +
+                "1. Speak into the mic to input text.\n" +
+                "2. Click 'Listen' to hear the spoken text.\n" +
+                "3. Click 'Track Me' to track your location and send it to emergency contacts.\n" +
+                "4. Click 'SOS' to send an emergency message with your location to contacts.\n" +
+                "5. Click 'Help' to see this help message.");
+
+        builder.setPositiveButton("OK", null);
+        builder.show();
     }
 
-    private void sendLocationToContact(Contact contact) {
-        if (contact != null && ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
-            // Get current location and send SMS to selected contact
-            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-                if (location != null) {
-                    String message = "Emergency! I'm at: https://maps.google.com/?q=" + location.getLatitude() + "," + location.getLongitude();
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(contact.getPhone(), null, message, null, null);
-                    Toast.makeText(this, "Location sent to " + contact.getName(), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Unable to get location", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-
-    private void openDrawer() {
-        drawerLayout.openDrawer(GravityCompat.START);
-    }
-    public boolean onNavigationItemSelected(MenuItem item) {
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_history) {
-            Toast.makeText(this, "History selected", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_friends) {
-            Toast.makeText(this, "Friends selected", Toast.LENGTH_SHORT).show();
+        if (id == R.id.nav_profile) {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            profileActivityLauncher.launch(intent);
+        } else if (id == R.id.nav_map) {
+            // Handle map item
         } else if (id == R.id.nav_settings) {
-            Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_logout) {
-            Toast.makeText(this, "Log Out selected", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_feedback) {
-            Toast.makeText(this, "Feedback selected", Toast.LENGTH_SHORT).show();
-        } else {
-            return super.onOptionsItemSelected(item);
+            // Handle settings item
         }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-    private void getLocationAndSend() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
-        }
-
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    sendLocationToContacts(location);
-                } else {
-                    Toast.makeText(MainActivity.this, "Unable to get location", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-    private void sendLocationToContacts(Location location) {
-        String message = "Emergency! I'm at: https://maps.google.com/?q=" + location.getLatitude() + "," + location.getLongitude();
-
-        List<String> emergencyContacts = getEmergencyContacts();  // Implement this method to get stored contacts
-
-        for (String contact : emergencyContacts) {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(contact, null, message, null, null);
-        }
-
-        Toast.makeText(this, "Location sent to emergency contacts!", Toast.LENGTH_SHORT).show();
-    }
-    private void saveEmergencyContact(String contact) {
-        SharedPreferences sharedPreferences = getSharedPreferences("EmergencyContacts", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("contact1", contact);
-        editor.apply();
-    }
-
-    private List<String> getEmergencyContacts() {
-        SharedPreferences sharedPreferences = getSharedPreferences("EmergencyContacts", MODE_PRIVATE);
-        List<String> contacts = new ArrayList<>();
-        contacts.add(sharedPreferences.getString("contact1", null));
-        return contacts;
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == 1) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLocationAndSend();
-            } else {
-                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-
-
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
-        gMap.getUiSettings().setZoomControlsEnabled(true);
-
-        // Check for location permission and get the current location
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, location -> {
-                        if (location != null) {
-                            updateLocation(location);
-                            gMap.setMyLocationEnabled(true);
-                            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                            gMap.addMarker(new MarkerOptions().position(userLocation).title("You are here"));
-                            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
-                        }
-                    });
-        } else {
-            requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
     }
-
-    private void updateLocation(Location location) {
-        if (location != null) {
-            String locationText = "Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude();
-            tvLocation.setText(locationText);
-
-            if (gMap != null) {
-                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                gMap.clear();
-                gMap.addMarker(new MarkerOptions().position(userLocation).title("You are here"));
-                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
-            }
-        }
-    }
-
-    private void startLocationUpdates() {
-        LocationRequest locationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10000)
-                .setFastestInterval(5000);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-        }
-    }
-
-    private void shareLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
-            List<String> emergencyContacts = getEmergencyContacts();
-            if (emergencyContacts.isEmpty()) {
-                Toast.makeText(this, "No emergency contacts found", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            String message = "I am here: " + tvLocation.getText().toString();
-
-            for (String contact : emergencyContacts) {
-                Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
-                smsIntent.setData(Uri.parse("smsto:" + contact));
-                smsIntent.putExtra("sms_body", message);
-                if (smsIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(smsIntent);
-                } else {
-                    Toast.makeText(this, "No SMS app found for contact: " + contact, Toast.LENGTH_SHORT).show();
-                }
-            }
-        } else {
-            Toast.makeText(this, "SMS permissions are required to share location", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-//    private List<String> getEmergencyContacts() {
-//        List<String> contacts = new ArrayList<>();
-//        contacts.add("0833381053");  // Example contact
-//        contacts.add("0678121390");  // Example contact
-//        return contacts;
-//    }
 
     @Override
     protected void onResume() {
@@ -537,14 +422,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        if (fusedLocationClient != null) {
+        if (speechRecognizer != null) {
+            speechRecognizer.destroy();
+        }
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        if (fusedLocationClient != null && locationCallback != null) {
             fusedLocationClient.removeLocationUpdates(locationCallback);
         }
     }
 
     @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
+    private void openDrawer() {
+        drawerLayout.openDrawer(GravityCompat.START);
     }
 }
