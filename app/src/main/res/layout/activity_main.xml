@@ -76,17 +76,18 @@
             android:layout_width="350dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="40dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:padding="35dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
-<!--            <Spinner-->
-<!--                android:id="@+id/spinnerMenu"-->
-<!--                android:layout_width="92dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_margin="16dp"-->
-<!--                android:background="@color/pink" />-->
+            <!--            <Spinner-->
+            <!--                android:id="@+id/spinnerMenu"-->
+            <!--                android:layout_width="92dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_margin="16dp"-->
+            <!--                android:background="@color/pink" />-->
 
             <TextView
                 android:id="@+id/tvUserName"
@@ -99,13 +100,12 @@
 
             <Button
                 android:id="@+id/btnCreateProfile"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/buttons"
                 android:text="Create Profile" />
-
 
 
             <EditText
@@ -129,6 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5">
+
                     <Button
                         android:id="@+id/btnSpeak"
                         android:layout_width="wrap_content"
@@ -150,9 +151,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/buttons"
-                        android:text="Listen"
                         android:paddingStart="30dp"
                         android:paddingEnd="30dp"
+                        android:text="Listen"
                         tools:ignore="ButtonStyle" />
                 </LinearLayout>
             </LinearLayout>
@@ -161,8 +162,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="30dp">
+                android:layout_marginBottom="30dp"
+                android:orientation="vertical">
 
 
                 <LinearLayout
@@ -182,8 +183,8 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2">
+                    android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/tvLocation"
                         android:layout_width="wrap_content"
@@ -191,43 +192,57 @@
                         android:layout_marginTop="15dp"
                         android:text="Current Location: " />
                 </LinearLayout>
+
+
+                <!-- Bottom Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+                    <!--                android:layout_marginBottom="20dp">-->
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="0.5">
+
+                        <Button
+                            android:id="@+id/btnTrackMe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/buttons"
+                            android:text="Track Me" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/btnHelp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/buttons"
+                            android:text="Help" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnSOS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/buttons"
+                        android:text="SOS" />
+                </LinearLayout>
             </LinearLayout>
-
-
-        <!-- Bottom Buttons -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="20dp">
-
-            <Button
-                android:id="@+id/btnTrackMe"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/pink"
-                android:text="Track Me" />
-
-            <Button
-                android:id="@+id/btnSOS"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/pink"
-                android:text="SOS" />
-
-            <Button
-                android:id="@+id/btnHelp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/pink"
-                android:text="Help" />
         </LinearLayout>
-    </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
