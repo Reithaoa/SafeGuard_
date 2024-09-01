@@ -28,7 +28,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="top">
                     <!-- Toolbar -->
                     <androidx.appcompat.widget.Toolbar
@@ -45,43 +45,47 @@
                     <!--Safe Guard and Ham Burger -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@+id/toolbar"
                         android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="@id/toolbar"
                         app:layout_constraintEnd_toEndOf="@id/toolbar"
                         app:layout_constraintStart_toStartOf="@id/toolbar"
                         app:layout_constraintTop_toTopOf="@id/toolbar">
 
+
                         <!-- Hamburger Menu -->
                         <LinearLayout
                             android:id="@+id/hamburgerMenu"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center"
+                            android:layout_marginVertical="4dp"
                             android:orientation="vertical"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
                             <View
-                                android:layout_width="30dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="4dp"
                                 android:layout_marginBottom="4dp"
                                 android:background="@color/colorAccent" />
 
                             <View
-                                android:layout_width="30dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="4dp"
                                 android:layout_marginBottom="4dp"
                                 android:background="@color/colorAccent" />
 
                             <View
-                                android:layout_width="30dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="4dp"
                                 android:layout_marginBottom="4dp"
                                 android:background="@color/colorAccent" />
 
                             <View
-                                android:layout_width="30dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="4dp"
                                 android:background="@color/colorAccent" />
                         </LinearLayout>
@@ -90,10 +94,11 @@
                         <!-- Safe Guard text -->
                         <TextView
                             android:id="@+id/tvSafeGuard"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
+
+
                             android:textAlignment="center"
                             android:text="SafeGuard"
                             android:textAppearance="@style/BoldTextAppearance"
@@ -101,6 +106,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                         <!-- Safe Guard text -->
+
 
                     </LinearLayout>
                     <!--Safe Guard and Ham Burger -->
