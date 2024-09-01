@@ -159,6 +159,7 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="start"
                             android:layout_weight="0.5">
 
                             <Button
@@ -166,8 +167,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/buttons"
-                                android:paddingStart="30dp"
-                                android:paddingEnd="30dp"
+                                android:paddingHorizontal="35dp"
                                 android:text="Speak"
                                 tools:ignore="ButtonStyle" />
                         </LinearLayout>
@@ -175,15 +175,15 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0">
+                            android:gravity="end"
+                            android:layout_weight="0.5">
 
                             <Button
                                 android:id="@+id/btnListen"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/buttons"
-                                android:paddingStart="30dp"
-                                android:paddingEnd="30dp"
+                                android:paddingHorizontal="35dp"
                                 android:text="Listen"
                                 tools:ignore="ButtonStyle" />
                         </LinearLayout>
@@ -194,7 +194,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="30dp"
                         android:orientation="vertical">
 
 
@@ -240,7 +239,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
+                                android:gravity="start"
                                 android:layout_weight="0.5">
 
                                 <Button
@@ -248,20 +247,25 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/buttons"
-                                    android:text="Track Me" />
+                                    android:text="Track Me"
+                                    android:textAlignment="center"/>
                             </LinearLayout>
 
                             <!--Help me button -->
                             <LinearLayout
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:layout_weight="0.5">
 
                                 <Button
                                     android:id="@+id/btnHelp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:paddingHorizontal="35dp"
                                     android:background="@drawable/buttons"
-                                    android:text="Help" />
+                                    android:text="  Help  "
+                                    android:textAlignment="center"/>
                             </LinearLayout>
                         </LinearLayout>
 
