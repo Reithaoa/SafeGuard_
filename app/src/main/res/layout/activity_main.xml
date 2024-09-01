@@ -28,7 +28,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="top">
                     <!-- Toolbar -->
                     <androidx.appcompat.widget.Toolbar
@@ -46,17 +46,18 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="@id/toolbar"
-                        app:layout_constraintTop_toTopOf="@id/toolbar"
+                        android:layout_marginHorizontal="20dp"
+                        app:layout_constraintBottom_toBottomOf="@id/toolbar"
                         app:layout_constraintEnd_toEndOf="@id/toolbar"
-                        app:layout_constraintBottom_toBottomOf="@id/toolbar">
+                        app:layout_constraintStart_toStartOf="@id/toolbar"
+                        app:layout_constraintTop_toTopOf="@id/toolbar">
 
                         <!-- Hamburger Menu -->
                         <LinearLayout
                             android:id="@+id/hamburgerMenu"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
+                            android:layout_gravity="center"
                             android:orientation="vertical"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
@@ -89,10 +90,11 @@
                         <!-- Safe Guard text -->
                         <TextView
                             android:id="@+id/tvSafeGuard"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textAlignment="center"
                             android:text="SafeGuard"
                             android:textAppearance="@style/BoldTextAppearance"
                             android:textColor="@color/colorAccent"
@@ -104,7 +106,7 @@
                     <!--Safe Guard and Ham Burger -->
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            <!-- toolbar, safe guard, burger -->
+                <!-- toolbar, safe guard, burger -->
 
             </LinearLayout>
             <!-- toolbar, safe guard, burger -->
@@ -292,7 +294,6 @@
 
             </LinearLayout>
             <!--Id input, map , buttons -->
-
 
         </LinearLayout>
 
