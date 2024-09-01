@@ -23,90 +23,89 @@
             <!-- toolbar, safe guard, burger -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <!-- the toolbar thingy -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="top">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top">
+                    <!-- Toolbar -->
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/colorPrimary"
+                        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                        app:layout_collapseMode="pin"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                    <!-- Toolbar -->
+
+                    <!--Safe Guard and Ham Burger -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        >
-                        <!-- Toolbar -->
-                        <androidx.appcompat.widget.Toolbar
-                            android:id="@+id/toolbar"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="?attr/colorPrimary"
-                            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                            app:layout_collapseMode="pin"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-    <!--                    android:layout_height="?attr/actionBarSize"-->
+                        app:layout_constraintStart_toStartOf="@id/toolbar"
+                        app:layout_constraintTop_toTopOf="@id/toolbar"
+                        app:layout_constraintEnd_toEndOf="@id/toolbar"
+                        app:layout_constraintBottom_toBottomOf="@id/toolbar">
 
-
-                        <!--Safe Guard and Ham Burger -->
+                        <!-- Hamburger Menu -->
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:id="@+id/hamburgerMenu"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:layout_constraintStart_toStartOf="@id/toolbar"
-                            app:layout_constraintTop_toTopOf="@id/toolbar"
-                            app:layout_constraintEnd_toEndOf="@id/toolbar"
-                            app:layout_constraintBottom_toBottomOf="@id/toolbar">
-                            <!-- Hamburger Menu -->
-                            <LinearLayout
-                                android:id="@+id/hamburgerMenu"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="16dp"
-                                android:orientation="vertical"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
+                            android:layout_margin="16dp"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                                <View
-                                    android:layout_width="30dp"
-                                    android:layout_height="4dp"
-                                    android:layout_marginBottom="4dp"
-                                    android:background="@color/colorAccent" />
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/colorAccent" />
 
-                                <View
-                                    android:layout_width="30dp"
-                                    android:layout_height="4dp"
-                                    android:layout_marginBottom="4dp"
-                                    android:background="@color/colorAccent" />
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/colorAccent" />
 
-                                <View
-                                    android:layout_width="30dp"
-                                    android:layout_height="4dp"
-                                    android:layout_marginBottom="4dp"
-                                    android:background="@color/colorAccent" />
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/colorAccent" />
 
-                                <View
-                                    android:layout_width="30dp"
-                                    android:layout_height="4dp"
-                                    android:background="@color/colorAccent" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/tvSafeGuard"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="16dp"
-                                android:text="SafeGuard"
-                                android:textAppearance="@style/BoldTextAppearance"
-                                android:textColor="@color/colorAccent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="4dp"
+                                android:background="@color/colorAccent" />
                         </LinearLayout>
-                        <!--Safe Guard and Ham Burger -->
+                        <!-- Hamburger Menu -->
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                    <!-- the toolbar thingy -->
+                        <!-- Safe Guard text -->
+                        <TextView
+                            android:id="@+id/tvSafeGuard"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="SafeGuard"
+                            android:textAppearance="@style/BoldTextAppearance"
+                            android:textColor="@color/colorAccent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                        <!-- Safe Guard text -->
 
-                </LinearLayout>
-                <!-- the toolbar thingy -->
+                    </LinearLayout>
+                    <!--Safe Guard and Ham Burger -->
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- toolbar, safe guard, burger -->
+
             </LinearLayout>
             <!-- toolbar, safe guard, burger -->
 
@@ -116,210 +115,190 @@
                 android:layout_height="match_parent"
                 android:gravity="top">
 
-                <!-- Main Content -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="35dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
+                    <!-- Text box to enter words -->
+                    <EditText
+                        android:id="@+id/etInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/buttons"
+                        android:hint="Enter text here"
+                        android:textAlignment="center"
+                        android:textColorHint="@color/cardview_shadow_start_color" />
+                    <!-- Text box rto enter words -->
+
+                    <!-- this is the setup for the  speak and listen button -->
+                    <!-- The two button are side by side speak | Listen -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Creating an inner LinearLAyout per button-->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:layout_weight="0.5">
+
+                            <Button
+                                android:id="@+id/btnSpeak"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/buttons"
+                                android:paddingHorizontal="35dp"
+                                android:text="Speak"
+                                tools:ignore="ButtonStyle" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:layout_weight="0.5">
+
+                            <Button
+                                android:id="@+id/btnListen"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/buttons"
+                                android:paddingHorizontal="35dp"
+                                android:text="Listen"
+                                tools:ignore="ButtonStyle" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <!-- this is the setup for the  speak and listen button -->
+
+                    <!-- This frame holds the map, bottom buttons and the location -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="35dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:orientation="vertical">
 
-
-                        <!-- Text box rto enter words -->
-                        <EditText
-                            android:id="@+id/etInput"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/buttons"
-                            android:hint="Enter text here"
-                            android:textAlignment="center"
-                            android:textColorHint="@color/cardview_shadow_start_color" />
-                        <!-- Text box rto enter words -->
-
-
-                        <!-- this is the setup for the  speak and listen button -->
-                        <!-- The two button are side by side speak | Listen -->
+                        <!--The map that we using -->
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_height="0dp"
+                            android:layout_weight="1"> <!--I changed you -->
 
-                            <!-- Creating an inner LinearLAyout per button-->
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="start"
-                                android:layout_weight="0.5">
-
-                                <Button
-                                    android:id="@+id/btnSpeak"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/buttons"
-                                    android:paddingHorizontal="35dp"
-                                    android:text="Speak"
-                                    tools:ignore="ButtonStyle" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="end"
-                                android:layout_weight="0.5">
-
-                                <Button
-                                    android:id="@+id/btnListen"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/buttons"
-                                    android:paddingHorizontal="35dp"
-                                    android:text="Listen"
-                                    tools:ignore="ButtonStyle" />
-                            </LinearLayout>
-                        </LinearLayout>
-                        <!-- this is the setup for the  speak and listen button -->
-
-                        <!-- This frame holds the map, and the location -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-
-                            <!-- Map and location -->
-                            <LinearLayout
+                            <com.google.android.gms.maps.MapView
+                                android:id="@+id/mapView"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:layout_marginTop="20dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/etInput" />
+                        </LinearLayout>
+                        <!--The map that we using -->
 
-                                android:orientation="vertical">
+                        <!--The current location text-->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
-                                <!--The map that we using -->
+                            <TextView
+                                android:id="@+id/tvLocation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:text="Current Location: " />
+                        </LinearLayout>
+                        <!--The current location text-->
+
+                        <!-- Bottom Buttons  -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:gravity="bottom">
+
+                                <!--Help and Track Me-->
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"> <!--I changed you -->
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="20dp"
+                                    android:baselineAligned="false"
+                                    android:orientation="horizontal">
 
-                                    <com.google.android.gms.maps.MapView
-                                        android:id="@+id/mapView"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginTop="20dp"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toBottomOf="@id/etInput" />
-                                </LinearLayout>
-                                <!--The map that we using -->
 
-                                <!--The current location text-->
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:id="@+id/tvLocation"
+                                    <!--Track me button -->
+                                    <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginTop="15dp"
-                                        android:text="Current Location: " />
-                                </LinearLayout>
-                                <!--The current location text-->
+                                        android:gravity="start"
+                                        android:layout_weight="0.5">
 
-                                <!-- Bottom Buttons  -->
+                                        <Button
+                                            android:id="@+id/btnTrackMe"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="@drawable/buttons"
+                                            android:paddingHorizontal="20dp"
+                                            android:text="Track Me"
+                                            android:textAlignment="center"/>
+                                    </LinearLayout>
+                                    <!--Track me button -->
+
+                                    <!--Help me button -->
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="end"
+                                        android:layout_weight="0.5">
+
+                                        <Button
+                                            android:id="@+id/btnHelp"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:paddingHorizontal="40dp"
+                                            android:background="@drawable/buttons"
+                                            android:text="Help"
+                                            android:textAlignment="center"/>
+                                    </LinearLayout>
+                                    <!--Help me button -->
+                                </LinearLayout>
+                                <!--Help and Track Me-->
+
+                                <!-- SOS button-->
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom">
 
-                                    <LinearLayout
+                                    <Button
+                                        android:id="@+id/btnSOS"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:orientation="vertical"
-                                        android:gravity="bottom">
-
-                                        <!--Help and Track Me-->
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="20dp"
-                                            android:baselineAligned="false"
-                                            android:orientation="horizontal">
-
-
-                                            <!--Track me button -->
-                                            <LinearLayout
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:gravity="start"
-                                                android:layout_weight="0.5">
-
-                                                <Button
-                                                    android:id="@+id/btnTrackMe"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:background="@drawable/buttons"
-                                                    android:text="Track Me"
-                                                    android:textAlignment="center"/>
-                                            </LinearLayout>
-                                            <!--Track me button -->
-
-                                            <!--Help me button -->
-                                            <LinearLayout
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:gravity="end"
-                                                android:layout_weight="0.5">
-
-                                                <Button
-                                                    android:id="@+id/btnHelp"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:paddingHorizontal="35dp"
-                                                    android:background="@drawable/buttons"
-                                                    android:text="Help"
-                                                    android:textAlignment="center"/>
-                                            </LinearLayout>
-                                            <!--Help me button -->
-                                        </LinearLayout>
-                                        <!--Help and Track Me-->
-
-                                        <!-- SOS button-->
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="bottom">
-
-                                            <Button
-                                                android:id="@+id/btnSOS"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginTop="10dp"
-                                                android:background="@drawable/buttons"
-                                                android:text="SOS" />
-                                        </LinearLayout>
-                                        <!-- SOS button-->
-                                    </LinearLayout>
-
-
+                                        android:layout_marginTop="10dp"
+                                        android:background="@drawable/buttons"
+                                        android:text="SOS" />
                                 </LinearLayout>
-                                <!-- Bottom Buttons  -->
-
+                                <!-- SOS button-->
                             </LinearLayout>
-                            <!-- Map and location -->
 
 
                         </LinearLayout>
-                        <!-- This frame olds the map, and the location -->
+                        <!-- Bottom Buttons  -->
                     </LinearLayout>
+                    <!-- This frame olds the map, and the location -->
+
                 </LinearLayout>
-                <!-- Main Content -->
 
             </LinearLayout>
             <!--Id input, map , buttons -->
