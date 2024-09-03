@@ -1,6 +1,6 @@
-package FirestoreController;
+package com.example.myapplication.firestorecontroller;
 
-import util.UserPhoneNumber;
+import com.example.myapplication.util.UserPhoneNumber;
 
 public class Contact {
     private final String name;

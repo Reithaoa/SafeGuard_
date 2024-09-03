@@ -10,7 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import FirestoreController.Profile;
+import com.example.myapplication.firestorecontroller.Contact;
+import com.example.myapplication.firestorecontroller.Profile;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -50,8 +51,8 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             // Save profile information (e.g., using SharedPreferences, SQLite, or a server)
             try {
-                FirestoreController.Contact em1 = new FirestoreController.Contact("", emergencyContact1, country);
-                FirestoreController.Contact em2 = new FirestoreController.Contact("", emergencyContact2, country);
+                Contact em1 = new Contact("", emergencyContact1, country);
+                Contact em2 = new Contact("", emergencyContact2, country);
                 new Profile(name, surname, height, Integer.parseInt(age), race, em1, em2).createProfile();
                 Toast.makeText(this, "Profile saved", Toast.LENGTH_SHORT).show();
             }catch (Exception e){
