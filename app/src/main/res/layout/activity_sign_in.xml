@@ -103,21 +103,6 @@
                     android:spinnerMode="dialog"
                     android:textAlignment="textStart"/>
 
-<!--                <EditText-->
-<!--                    android:id="@+id/etOtp"-->
-<!--                    android:layout_width="295dp"-->
-<!--                    android:layout_height="51dp"-->
-<!--                    android:background="@drawable/sign_in_spinner_border"-->
-<!--                    android:hint="Enter OTP"-->
-<!--                    android:inputType="number"-->
-<!--                    android:textColorHint="@color/cardview_shadow_start_color"-->
-<!--                    android:visibility="gone"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintHorizontal_bias="0.456"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent"-->
-<!--                    app:layout_constraintVertical_bias="0.456" />-->
             </LinearLayout>
             <!-- Countries -->
 
@@ -162,6 +147,27 @@
             </LinearLayout>
             <!-- Country Code and Phone number -->
 
+
+            <!-- OTP Entry -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/etOtp"
+                android:layout_width="290dp"
+                android:layout_height="51dp"
+                android:background="@drawable/sign_in_spinner_border"
+                android:hint="Enter OTP"
+                android:maxLength="6"
+                android:inputType="number"
+                android:textColorHint="@color/cardview_shadow_start_color"
+                android:visibility="gone" />
+        </LinearLayout>
+            <!-- OTP Entry -->
+
+
             <!-- Send OTP -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -177,100 +183,64 @@
             </LinearLayout>
             <!-- Send OTP -->
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnVerifyOtp"
+                    android:text="Verify OTP"
+                    style="@style/customMenuButtons"
+                    android:visibility="gone"/>
+
+
+            </LinearLayout>
+
 
         </LinearLayout>
         <!-- Country Wheel, phone number, send otp -->
-
 
     </LinearLayout>
 
 
 
-        <EditText
-            android:id="@+id/etOtp"
-            android:layout_width="295dp"
-            android:layout_height="51dp"
-            android:background="@drawable/sign_in_spinner_border"
-            android:hint="Enter OTP"
-            android:inputType="number"
-            android:textColorHint="@color/cardview_shadow_start_color"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.456"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.456" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
 
-        <Button
-            android:id="@+id/btnVerifyOtp"
-            android:layout_width="298dp"
-            android:layout_height="52dp"
-            android:background="@drawable/sign_in_spinner_border"
-            android:text="Verify OTP"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.439"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.604" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/otpMessage"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Enter Code"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textStyle="bold"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintVertical_bias="0.148" />-->
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top" />
 
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="20dp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="20dp" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="left" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="top" />
-
-        <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/flow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/flow2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-<!--    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
