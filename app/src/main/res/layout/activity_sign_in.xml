@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:gravity ="center"
+    android:layout_margin="@dimen/_16ssp"
     tools:context=".SignInActivity">
 
     <LinearLayout
@@ -18,83 +19,165 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
 
-        <TextView
-            android:id="@+id/tvTopMessage"
-            android:layout_width="wrap_content"
+
+        <!-- Messages -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Your phone number"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.148" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_16ssp">
+
+            <!--Phone number message-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvTopMessage"
+                    android:text="Your phone number"
+
+                    android:paddingBottom="@dimen/_2ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_16ssp"
+                    android:textStyle="bold"
+                    android:autoSizeTextType="uniform"/>
+             </LinearLayout>
+            <!-- Phone number message -->
 
 
-        <TextView
-            android:id="@+id/confirmCountry"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:text="Please confirm your country code and enter your phone number"
-            android:textAlignment="center"
-            android:textColor="#808080"
-            android:textSize="8sp"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toTopOf="@+id/etPhoneNumber"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.447"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTopMessage"
-            app:layout_constraintVertical_bias="0.091" />
+            <!-- Confirm Country -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/confirmCountry"
+                    android:text="Please confirm your country code and enter your phone number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_24ssp"
+                    android:gravity="center"
+
+                    android:textAlignment="center"
+                    android:textColor="#808080"
+                    android:textSize="@dimen/_8ssp"
+                    app:autoSizeTextType="uniform"/>
+            </LinearLayout>
+            <!-- Confirm Country -->
 
 
-        <Button
-            android:id="@+id/btnSendOtp"
-            android:layout_width="298dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="32dp"
-            android:background="@drawable/sign_in_spinner_border"
-            android:text="Send OTP"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/countries"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/countries"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.605" />
+        </LinearLayout>
+        <!-- Messages -->
 
-        <EditText
-            android:id="@+id/ctrCode"
-            android:layout_width="80dp"
-            android:layout_height="51dp"
-            android:background="@drawable/ctr_code"
-            android:hint="+xxx"
-            android:inputType="phone"
-            android:maxLength="4"
-            android:textColorHint="@color/cardview_shadow_start_color"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/countries"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.456" />
+        <!-- Country Wheel, phone number, send otp -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
 
-        <EditText
-            android:id="@+id/etPhoneNumber"
-            android:layout_width="210dp"
-            android:layout_height="51dp"
-            android:background="@drawable/phone_number_box"
-            android:hint="xxx-xxx-xxx"
-            android:inputType="phone"
-            android:maxLength="10"
-            android:textColorHint="@color/cardview_shadow_start_color"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/countries"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.456" />
+            android:gravity="center">
+
+            <!-- Countries -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="@dimen/_2ssp">
+
+                <Spinner
+                    android:id="@+id/countries"
+                    android:layout_width="290dp"
+                    android:layout_height="51dp"
+                    android:background="@drawable/sign_in_spinner_border"
+                    android:dropDownWidth="match_parent"
+                    android:spinnerMode="dialog"
+                    android:textAlignment="textStart"/>
+
+<!--                <EditText-->
+<!--                    android:id="@+id/etOtp"-->
+<!--                    android:layout_width="295dp"-->
+<!--                    android:layout_height="51dp"-->
+<!--                    android:background="@drawable/sign_in_spinner_border"-->
+<!--                    android:hint="Enter OTP"-->
+<!--                    android:inputType="number"-->
+<!--                    android:textColorHint="@color/cardview_shadow_start_color"-->
+<!--                    android:visibility="gone"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.456"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintVertical_bias="0.456" />-->
+            </LinearLayout>
+            <!-- Countries -->
+
+            <!-- Country Code and Phone number-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <!-- Country Code -->
+                    <EditText
+                        android:id="@+id/ctrCode"
+                        android:layout_width="80dp"
+                        android:layout_height="51dp"
+                        android:background="@drawable/ctr_code"
+                        android:hint="+xxx"
+                        android:inputType="phone"
+                        android:maxLength="4"
+                        android:textColorHint="@color/cardview_shadow_start_color" />
+                    <!-- Country code -->
+
+                    <!-- Phone number -->
+                    <EditText
+                        android:id="@+id/etPhoneNumber"
+                        android:layout_width="210dp"
+                        android:layout_height="51dp"
+                        android:background="@drawable/phone_number_box"
+                        android:hint="xxx-xxx-xxx"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:textColorHint="@color/cardview_shadow_start_color" />
+                    <!-- Phone number -->
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <!-- Country Code and Phone number -->
+
+            <!-- Send OTP -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_8ssp"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/btnSendOtp"
+                    android:text="Send OTP"
+                    style="@style/customMenuButtons">
+                </Button>
+
+            </LinearLayout>
+            <!-- Send OTP -->
+
+
+        </LinearLayout>
+        <!-- Country Wheel, phone number, send otp -->
+
+
+    </LinearLayout>
+
+
 
         <EditText
             android:id="@+id/etOtp"
@@ -112,6 +195,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.456" />
 
+
         <Button
             android:id="@+id/btnVerifyOtp"
             android:layout_width="298dp"
@@ -126,21 +210,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.604" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/confirmCountry"-->
-<!--            android:layout_width="303dp"-->
-<!--            android:layout_height="42dp"-->
-<!--            android:text="Please confirm your country code and enter your phone number"-->
-<!--            android:textAlignment="center"-->
-<!--            android:textColor="#808080"-->
-<!--            android:textSize="8sp"-->
-<!--            app:autoSizeTextType="uniform"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/etPhoneNumber"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.447"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/tvTopMessage"-->
-<!--            app:layout_constraintVertical_bias="0.091" />-->
+
 
         <TextView
             android:id="@+id/confirmOtp"
@@ -151,13 +221,7 @@
             android:textColor="#808080"
             android:textSize="8sp"
             android:visibility="gone"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toTopOf="@+id/etPhoneNumber"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.447"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTopMessage"
-            app:layout_constraintVertical_bias="0.186" />
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/otpMessage"
@@ -174,32 +238,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.148" />
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="confirmCountry,tvTopMessage" />
 
-        <Spinner
-            android:id="@+id/countries"
-            android:layout_width="290dp"
-            android:layout_height="51dp"
-            android:background="@drawable/sign_in_spinner_border"
-            android:dropDownWidth="match_parent"
-            android:spinnerMode="dialog"
-            android:textAlignment="textStart"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/confirmCountry"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/confirmCountry"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.365" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="etPhoneNumber,btnSendOtp,ctrCode" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -237,6 +276,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
