@@ -3,4 +3,10 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">28sp</item>
     </style>
+
+    <style name="customMenuButtons" >
+        <item name="android:layout_width">290dp</item> 
+        <item name="android:layout_height">52dp</item>
+        <item name="android:background">@drawable/sign_in_spinner_border</item>
+    </style>
 </resources>
