@@ -28,7 +28,7 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/_16ssp">
 
-            <!--Phone number message-->
+            <!--Phone  request number message-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,16 +37,10 @@
                 <TextView
                     android:id="@+id/tvTopMessage"
                     android:text="Your phone number"
-
-                    android:paddingBottom="@dimen/_2ssp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_16ssp"
-                    android:textStyle="bold"
-                    android:autoSizeTextType="uniform"/>
+                    android:visibility="visible"
+                    style="@style/boldConfirmationMessage"/>
              </LinearLayout>
-            <!-- Phone number message -->
+            <!-- Phone request number message -->
 
 
             <!-- Confirm Country -->
@@ -58,16 +52,28 @@
                 <TextView
                     android:id="@+id/confirmCountry"
                     android:text="Please confirm your country code and enter your phone number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_24ssp"
-                    android:gravity="center"
-
-                    android:textAlignment="center"
-                    android:textColor="#808080"
-                    android:textSize="@dimen/_8ssp"
-                    app:autoSizeTextType="uniform"/>
+                    android:visibility="visible"
+                    app:autoSizeTextType="uniform"
+                    style="@style/lightConfirmationMessage"/>
             </LinearLayout>
             <!-- Confirm Country -->
+
+            <!-- Otp request message -->
+            <TextView
+                android:id="@+id/otpMessage"
+                android:text="Enter Code"
+                android:visibility="gone"
+                style="@style/boldConfirmationMessage"/>
+            <!-- Otp request message -->
+
+            <!-- Otp confirmation -->
+            <TextView
+                android:id="@+id/confirmOtp"
+                android:text="We've sent an SMS with an activation code to your phone"
+                style="@style/lightConfirmationMessage"
+                android:visibility="gone"
+                app:autoSizeTextType="uniform" />
+            <!-- Otp confirmation -->
 
 
         </LinearLayout>
@@ -131,6 +137,7 @@
                         android:id="@+id/ctrCode"
                         android:layout_width="80dp"
                         android:layout_height="51dp"
+                        android:autofillHints="+xxx"
                         android:background="@drawable/ctr_code"
                         android:hint="+xxx"
                         android:inputType="phone"
@@ -211,32 +218,20 @@
             app:layout_constraintVertical_bias="0.604" />
 
 
-
-        <TextView
-            android:id="@+id/confirmOtp"
-            android:layout_width="303dp"
-            android:layout_height="42dp"
-            android:text="We've sent an SMS with an activation code to your phone"
-            android:textAlignment="center"
-            android:textColor="#808080"
-            android:textSize="8sp"
-            android:visibility="gone"
-            app:autoSizeTextType="uniform" />
-
-        <TextView
-            android:id="@+id/otpMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter Code"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.148" />
+<!--        <TextView-->
+<!--            android:id="@+id/otpMessage"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Enter Code"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.148" />-->
 
 
 
