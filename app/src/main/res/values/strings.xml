@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">SafeGuard</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="confirm_country_and_code">Please confirm your country code and enter your phone number</string>
+    <string name="sent_sms">We\'ve sent an SMS with an activation code to your phone</string>
+    <string name="phone_number_example">xxx-xxx-xxx</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="your_phone_number">Your phone number</string>
+    <string name="country_code_example">+xxx</string>
+    <string name="enter_otp">Enter OTP</string>
 
     <string-array name="menu_options">
         <item>History</item>

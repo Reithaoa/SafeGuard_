@@ -36,7 +36,7 @@
 
                 <TextView
                     android:id="@+id/tvTopMessage"
-                    android:text="Your phone number"
+                    android:text="@string/your_phone_number"
                     android:visibility="visible"
                     style="@style/boldConfirmationMessage"/>
              </LinearLayout>
@@ -51,7 +51,7 @@
 
                 <TextView
                     android:id="@+id/confirmCountry"
-                    android:text="Please confirm your country code and enter your phone number"
+                    android:text="@string/confirm_country_and_code"
                     android:visibility="visible"
                     app:autoSizeTextType="uniform"
                     style="@style/lightConfirmationMessage"/>
@@ -61,7 +61,7 @@
             <!-- Otp request message -->
             <TextView
                 android:id="@+id/otpMessage"
-                android:text="Enter Code"
+                android:text="@string/enter_code"
                 android:visibility="gone"
                 style="@style/boldConfirmationMessage"/>
             <!-- Otp request message -->
@@ -69,7 +69,7 @@
             <!-- Otp confirmation -->
             <TextView
                 android:id="@+id/confirmOtp"
-                android:text="We've sent an SMS with an activation code to your phone"
+                android:text="@string/sent_sms"
                 style="@style/lightConfirmationMessage"
                 android:visibility="gone"
                 app:autoSizeTextType="uniform" />
@@ -112,37 +112,31 @@
                 android:layout_height="wrap_content"
                 android:gravity="center">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
+                <!-- Country Code -->
+                <EditText
+                    android:id="@+id/ctrCode"
+                    android:layout_width="80dp"
+                    android:layout_height="51dp"
+                    android:autofillHints="+xxx"
+                    android:background="@drawable/ctr_code"
+                    android:hint="@string/country_code_example"
+                    android:inputType="phone"
+                    android:maxLength="4"
+                    android:textColorHint="@color/cardview_shadow_start_color" />
+                <!-- Country code -->
 
-                    <!-- Country Code -->
-                    <EditText
-                        android:id="@+id/ctrCode"
-                        android:layout_width="80dp"
-                        android:layout_height="51dp"
-                        android:autofillHints="+xxx"
-                        android:background="@drawable/ctr_code"
-                        android:hint="+xxx"
-                        android:inputType="phone"
-                        android:maxLength="4"
-                        android:textColorHint="@color/cardview_shadow_start_color" />
-                    <!-- Country code -->
-
-                    <!-- Phone number -->
-                    <EditText
-                        android:id="@+id/etPhoneNumber"
-                        android:layout_width="210dp"
-                        android:layout_height="51dp"
-                        android:background="@drawable/phone_number_box"
-                        android:hint="xxx-xxx-xxx"
-                        android:inputType="phone"
-                        android:maxLength="10"
-                        android:textColorHint="@color/cardview_shadow_start_color" />
-                    <!-- Phone number -->
-
-                </LinearLayout>
+                <!-- Phone number -->
+                <EditText
+                    android:id="@+id/etPhoneNumber"
+                    android:layout_width="210dp"
+                    android:layout_height="51dp"
+                    android:autofillHints=""
+                    android:background="@drawable/phone_number_box"
+                    android:hint="@string/phone_number_example"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:textColorHint="@color/cardview_shadow_start_color" />
+                <!-- Phone number -->
 
             </LinearLayout>
             <!-- Country Code and Phone number -->
@@ -152,6 +146,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:gravity="center">
 
             <EditText
@@ -159,7 +154,7 @@
                 android:layout_width="290dp"
                 android:layout_height="51dp"
                 android:background="@drawable/sign_in_spinner_border"
-                android:hint="Enter OTP"
+                android:hint="@string/enter_otp"
                 android:maxLength="6"
                 android:inputType="number"
                 android:textColorHint="@color/cardview_shadow_start_color"
@@ -176,7 +171,7 @@
                 android:gravity="center">
                 <Button
                     android:id="@+id/btnSendOtp"
-                    android:text="Send OTP"
+                    android:text="@string/send_otp"
                     style="@style/customMenuButtons">
                 </Button>
 
@@ -190,7 +185,7 @@
 
                 <Button
                     android:id="@+id/btnVerifyOtp"
-                    android:text="Verify OTP"
+                    android:text="@string/verify_otp"
                     style="@style/customMenuButtons"
                     android:visibility="gone"/>
 
