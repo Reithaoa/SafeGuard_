@@ -1,4 +1,4 @@
-package FirestoreController;
+package com.example.myapplication.firestorecontroller;
 
 import com.example.myapplication.MainActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
