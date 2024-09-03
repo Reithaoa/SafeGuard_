@@ -1,4 +1,4 @@
-package FirestoreController;
+package com.example.myapplication.firestorecontroller;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;

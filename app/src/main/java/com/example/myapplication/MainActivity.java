@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         btnListen = findViewById(R.id.btnListen);
         etInput = findViewById(R.id.etInput);
         tvLocation = findViewById(R.id.tvLocation);
-        btnCreateProfile = findViewById(R.id.btnCreateProfile);
+//        btnCreateProfile = findViewById(R.id.btnCreateProfile);
         btnTrackMe = findViewById(R.id.btnTrackMe);
         btnSOS = findViewById(R.id.btnSOS);
         btnHelp = findViewById(R.id.btnHelp);
@@ -228,10 +228,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        btnCreateProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            profileActivityLauncher.launch(intent);
-        });
+//        btnCreateProfile.setOnClickListener(v -> {
+//            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+//            profileActivityLauncher.launch(intent);
+//        });
 
         btnTrackMe.setOnClickListener(v -> {
             if (permissionHandler.hasLocationPermission()) {
@@ -404,6 +404,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            // Enable the My Location layer
+            gMap.setMyLocationEnabled(true);
+
+            // Get the user's current location and move the camera
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                if (location != null) {
+                    LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                }
+            });
+        }
     }
 
     @Override
