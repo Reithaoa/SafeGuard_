@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.myapplication">
 
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyCy0JzYpe2SFIzkhGAKmIxCqGFaY-5kvBc" />
-
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
@@ -48,7 +44,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
+            android:value="AIzaSyCM2S_Lem_YnJJtGKRAszTESxh2qzbld8w" />
 
         <activity
             android:name=".MapsActivity"
