@@ -12,7 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
-    private Button btnEnableLocation;
+//    private Button btnEnableLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class WelcomeActivity extends AppCompatActivity {
         TextView welcomeMessage = findViewById(R.id.welcomeMessage);
         welcomeMessage.setText("Welcome to SafeGuard, where your safety is guaranteed");
 
-        btnEnableLocation = findViewById(R.id.btnEnableLocation);
+//        btnEnableLocation = findViewById(R.id.btnEnableLocation);
 
         // Display the welcome screen for 6 seconds and then check if location services are enabled
         new Handler().postDelayed(() -> {
