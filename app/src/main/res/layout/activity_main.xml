@@ -100,7 +100,7 @@
 
 
                             android:textAlignment="center"
-                            android:text="SafeGuard"
+                            android:text="@string/safeguard"
                             android:textAppearance="@style/BoldTextAppearance"
                             android:textColor="@color/colorAccent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/buttons"
-                    android:hint="Enter text here"
+                    android:hint="@string/enter_text_here"
                     android:textAlignment="center"
                     android:textColorHint="@color/cardview_shadow_start_color" />
                 <!-- Text box rto enter words -->
@@ -151,36 +151,29 @@
 
                     <!-- Creating an inner LinearLAyout per button-->
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="start"
-                        android:layout_weight="0.5">
+                        android:paddingEnd="@dimen/_45ssp"
+                        android:layout_weight="1">
 
                         <Button
                             android:id="@+id/btnSpeak"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/buttons"
-                            android:baselineAligned="false"
-                            android:paddingHorizontal="35dp"
-                            android:text="Speak"
-                            tools:ignore="ButtonStyle" />
+                            android:text="@string/speak"
+                            style="@style/actionButtons"/>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:paddingStart="@dimen/_45ssp"
                         android:layout_height="wrap_content"
                         android:gravity="end"
-                        android:layout_weight="0.5">
+                        android:layout_weight="1">
 
                         <Button
                             android:id="@+id/btnListen"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/buttons"
-                            android:paddingHorizontal="35dp"
-                            android:text="Listen"
-                            tools:ignore="ButtonStyle" />
+                            android:text="@string/listen"
+                            style="@style/actionButtons"/>
                     </LinearLayout>
                 </LinearLayout>
                 <!-- this is the setup for the  speak and listen button -->
@@ -195,7 +188,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1"> <!--I changed you -->
+                        android:layout_weight="1"
+                        android:visibility="gone">
 
                         <com.google.android.gms.maps.MapView
                             android:id="@+id/mapView"
@@ -212,14 +206,15 @@
                     <!--The current location text-->
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/tvLocation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
-                            android:text="Current Location: " />
+                            android:text="@string/current_location" />
                     </LinearLayout>
                     <!--The current location text-->
 
@@ -241,37 +236,31 @@
 
                             <!--Track me button -->
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:gravity="start"
-                                android:layout_weight="0.5">
+                                android:paddingEnd="@dimen/_45ssp"
+                                android:layout_weight="1">
 
                                 <Button
                                     android:id="@+id/btnTrackMe"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/buttons"
-                                    android:paddingHorizontal="20dp"
-                                    android:text="Track Me"
-                                    android:textAlignment="center"/>
+                                    android:text="@string/track_me"
+                                    style="@style/actionButtons"/>
                             </LinearLayout>
                             <!--Track me button -->
 
                             <!--Help me button -->
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:paddingStart="@dimen/_45ssp"
                                 android:gravity="end"
-                                android:layout_weight="0.5">
+                                android:layout_weight="1">
 
                                 <Button
                                     android:id="@+id/btnHelp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingHorizontal="40dp"
-                                    android:background="@drawable/buttons"
-                                    android:text="Help"
-                                    android:textAlignment="center"/>
+                                    android:text="@string/help"
+                                    style="@style/actionButtons"/>
                             </LinearLayout>
                             <!--Help me button -->
                         </LinearLayout>
@@ -289,7 +278,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:background="@drawable/buttons"
-                                android:text="SOS" />
+                                android:text="@string/sos" />
                         </LinearLayout>
                         <!-- SOS button-->
 
