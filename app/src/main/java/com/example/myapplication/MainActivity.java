@@ -107,6 +107,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     permissionHandler.handleContactsPermissionsResult(readContactsGranted, writeContactsGranted);
                 }
             });
+    private final ActivityResultLauncher<String> requestMicrophonePermissionsLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+
+                if (isGranted != null) {
+                    permissionHandler.handleMicrophonePermissionsResult(isGranted);
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

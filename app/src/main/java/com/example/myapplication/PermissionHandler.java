@@ -92,4 +92,7 @@ public class PermissionHandler {
 
     public void handleSmsPermissionsResult(Boolean sendSmsGranted, Boolean receiveSmsGranted, Boolean readSmsGranted) {
     }
+
+    public void handleMicrophonePermissionsResult(Boolean recordAudioGranted) {
+    }
 }
