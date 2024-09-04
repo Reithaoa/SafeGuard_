@@ -227,6 +227,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         btnListen.setOnClickListener(v -> {
+            if (!permissionHandler.hasMicrophonePermission()){
+                permissionHandler.requestMicrophonePermission(requestMicrophonePermissionsLauncher);
+            }
             String text = etInput.getText().toString();
             if (!text.isEmpty()) {
                 textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
@@ -241,16 +244,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        });
 
         btnTrackMe.setOnClickListener(v -> {
-            if (permissionHandler.hasLocationPermission()) {
-                List<Contact> contacts = databaseHelper.getAllContacts();
-                if (!contacts.isEmpty()) {
-                    showContactSelectionDialog(contacts);
-                    startLocationUpdates();
-                } else {
-                    Toast.makeText(this, "No emergency contacts found", Toast.LENGTH_SHORT).show();
-                }
-            } else {
+            if (!permissionHandler.hasLocationPermission()) {
                 permissionHandler.requestLocationPermission(requestLocationPermissionsLauncher);
+            }
+            List<Contact> contacts = databaseHelper.getAllContacts();
+            if (!contacts.isEmpty()) {
+                showContactSelectionDialog(contacts);
+                startLocationUpdates();
+            } else {
+                Toast.makeText(this, "No emergency contacts found", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -408,24 +410,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission_group.LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-
-            // Enable the My Location layer
-            gMap.setMyLocationEnabled(true);
-
-            // Get the user's current location and move the camera
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-                if (location != null) {
-                    LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
-                }
-            });
+        if (!permissionHandler.hasLocationPermission()) {
+            permissionHandler.requestLocationPermission(requestLocationPermissionsLauncher);
         }
+        gMap.setMyLocationEnabled(true);
+        // Enable the My Location layer
+
+        // Get the user's current location and move the camera
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+            }
+        });
     }
 
     @Override

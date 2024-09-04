@@ -11,6 +11,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.location.Granularity;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.Priority;
+import com.google.android.gms.location.SettingsClient;
+
 public class WelcomeActivity extends AppCompatActivity {
 //    private Button btnEnableLocation;
 
@@ -31,7 +36,9 @@ public class WelcomeActivity extends AppCompatActivity {
                 startSignInActivity();
             } else {
                 showLocationEnableDialog();
+                startSignInActivity();
             }
+
         }, 6000); // 6000 milliseconds = 6 seconds
     }
 
@@ -41,7 +48,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void showLocationEnableDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enable Location Services");
         builder.setMessage("To use SafeGuard, enable location services.");
         builder.setPositiveButton("Enable", (dialog, which) -> {
@@ -53,7 +60,12 @@ public class WelcomeActivity extends AppCompatActivity {
             finish();
         });
         builder.setCancelable(false);
-        builder.show();
+        builder.show();*/
+        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+                .setGranularity(Granularity.GRANULARITY_FINE)
+                .setIntervalMillis(5)
+                .build();
+
     }
 
     private void startSignInActivity() {
