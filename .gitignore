@@ -1,17 +1,108 @@
-*.idea/* 
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+# Gradle files
+.gradle/
+build/
+**/build/
+!gradle-wrapper.jar
+.gradle/caches/
+.gradle/gradle-app/src/main/assets/
+.gradle/caches/
+.gradle/wrapper/
+gradlew
+gradlew.bat
+gradle-wrapper.jar
+gradle-wrapper.properties
+
+# Local configuration file (sdk path, etc)
 local.properties
-*.idea*
+
+# Proguard
+proguard/
+proguard-rules.pro
+proguard-project.txt
+proguard-rules-debug.pro
+
+# IntelliJ/Android Studio project files
+.idea/
+.idea/caches/
+.idea/libraries/
+.idea/workspace.xml
+.idea/modules.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/misc.xml
+*.iml
+*.ipr
+*.iws
+
+# Kotlin specific
+*.kotlin_module
+*.kotlin_metadata
+
+# External native build folder generated in Android Studio 2.2+
+.externalNativeBuild
+
+# ndk build folder generated in Android Studio 2.2+
+/ndkBuild/
+
+# Android Studio 3.1+ builds
+/captures/
+output.json
+
+# Built application files
+*.apk
+*.ap_
+
+# Files for the Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+
+# Gradle config
+.gradle/
+/build/
+.gradle-local/
+gradle.properties
+
+# JetBrains
+.idea/
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+
+# Others
+.DS_Store
+*.log
+*.swp
+*.tmp
+*.temp
+*.orig
+*.rej
+*.sublime-project
+*.sublime-workspace
+
+# Android Studio Navigation Editor temp files
+.navigation/
+
+# Keystore files
+*.jks
+
+# Fastlane
+/fastlane/report.xml
+/fastlane/Preview.html
+/fastlane/screenshots
+/fastlane/test_output
+
+# Flutter specific
+.dart_tool/
+.flutter-plugins
+.packages
+pubspec.lock
+.flutter-plugins-dependencies
